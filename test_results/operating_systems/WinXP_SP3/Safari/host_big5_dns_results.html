@@ -1,0 +1,34 @@
+<!-- Copyright 2009 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
+</head>
+<body>
+<table border="1">
+<tr><td>Test</td><td>WinXP_SP3/Safari3_2_2</td><td>WinXP_SP3/Safari4_0</td><td>Comments</td></tr>
+<tr><td>\xA2\xCC</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr><td>\xA4Q</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr><td>%a2%cc</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>%a4%51</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>%e5%8d%81</td><td>\xC3\xA5\xC2\x8D\xC2\x81</td><td>\xC3\xA5\xC2\x8D\xC2\x81</td></tr>
+<tr><td>\xA2\xCC%20%a2%cc</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>\xA2\xCC%a2%cc</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>&amp;#x5341;</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr><td>&amp;#x5341;%2ecom</td><td>xn--.com-9b5j</td><td>xn--.com-9b5j</td></tr>
+</table>
+</body>
+</html>
