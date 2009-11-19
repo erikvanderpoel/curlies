@@ -15,8 +15,8 @@
  */
 
 /**
- * This file contains all the test cases for the Browser URL Behavior Monitor
- * project.
+ * This file contains all the test cases for the Client URL Internet Emission
+ * Sniffer (Curlies) project.
  *
  * When adding new tests, it is NOT necessary to keep the ID in the ascending
  * order. However, ALWAYS use the Next Available ID when you add a new
@@ -25,6 +25,7 @@
  * Next Available ID: 1312
  *
  * @author Shaopeng Jia (jia.shao.peng@gmail.com)
+ * @author Erik van der Poel (erikvanderpoel@gmail.com)
  */
 
 #include "testcases.h"
