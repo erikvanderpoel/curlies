@@ -18,6 +18,7 @@
  * Definition TestCase for Client URL Internet Emission Sniffer (Curlies)
  *
  * @author Shaopeng Jia (jia.shao.peng@gmail.com)
+ * @author Erik van der Poel (erikvanderpoel@gmail.com)
  */
 #ifndef TESTCASES_H_
 #define TESTCASES_H_
