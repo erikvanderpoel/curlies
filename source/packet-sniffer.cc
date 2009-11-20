@@ -28,17 +28,19 @@
 #include "packet-sniffer.h"
 
 using namespace std;
+
 const char* memstr(const char* ptr, int length, const char* str) {
-	int str_length = strlen(str);
-	while (length >= str_length) {
-      const char* pos = (char*)memchr(ptr, str[0], length);
-	  if (pos == NULL) return NULL;
-	  if (memcmp(pos, str, str_length) == 0) return pos;
-	  length = length - (pos - ptr) - 1;
-	  ptr = pos + 1;
-	}
-	return NULL;
+  int str_length = strlen(str);
+  while (length >= str_length) {
+    const char* pos = (char*)memchr(ptr, str[0], length);
+    if (pos == NULL) return NULL;
+    if (memcmp(pos, str, str_length) == 0) return pos;
+    length = length - (pos - ptr) - 1;
+    ptr = pos + 1;
+  }
+  return NULL;
 }
+
 void ExtractResultsFromCapFile(const char* filename,
                                const string& packet_type,
                                vector<string>* results
@@ -64,18 +66,18 @@ void ExtractResultsFromCapFile(const char* filename,
   }
   handle = pcap_open_offline(filename, errbuf);
   if (handle == NULL) {
-	cerr << "Couldn't open file" << filename << ": " << errbuf << "\n";
+    cerr << "Couldn't open file" << filename << ": " << errbuf << "\n";
   }
 
   if (pcap_compile(handle, &fp, const_cast<char*>(filter_exp.c_str()), 0, 0)
-		  == -1) {
-	cerr << "Couldn't parse filter " << filter_exp << ": "
-	     << pcap_geterr(handle) << "\n";
+      == -1) {
+    cerr << "Couldn't parse filter " << filter_exp << ": "
+         << pcap_geterr(handle) << "\n";
   }
 
   if (pcap_setfilter(handle, &fp) == -1) {
-	cerr << "Couldn't install filter " << filter_exp << ": "
-	     << pcap_geterr(handle) << "\n";
+    cerr << "Couldn't install filter " << filter_exp << ": "
+         << pcap_geterr(handle) << "\n";
   }
 
   packet = pcap_next(handle, &pkthdr);
@@ -123,8 +125,8 @@ void ExtractResultsFromCapFile(const char* filename,
                } else if (ch < '\x20') {
                  test_str.push_back('.');
                } else {
-            	 char temp[10];
-            	 snprintf(temp, 10, "\\x%02X", ch);
+                 char temp[10];
+                 snprintf(temp, 10, "\\x%02X", ch);
                  test_str.append(temp);
                }
              }
