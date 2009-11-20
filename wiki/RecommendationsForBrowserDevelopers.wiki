@@ -2,7 +2,7 @@ Erik van der Poel, 20 Nov 2009
 
 === Introduction ===
 
-This document makes recommendations for browser developers who wish to transform URLs in the same way as other browsers.
+This document makes recommendations for browser developers who wish to transform URLs in the same way as other browsers. In addition to interoperability considerations, some security recommendations are made.
 
 === Document Conventions ===
 
@@ -14,13 +14,24 @@ Recommendations are in normal paragraphs like this one.
 
 === Definitions ===
 
+  * Encoding: character encoding, not to be confused with %-escaping.
+  * Escaping: %-escaping, not to be confused with HTML's &-escaping.
   * IRI: Internationalized Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3987.txt RFC 3987].
   * URI: Uniform Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3986.txt RFC 3986].
   * URL: Uniform Resource Locator, as used in HTML's `<a href="...">`, for example. URLs may contain mixtures of %-escaped and not-escaped non-ASCII text, so they are neither pure URIs nor pure IRIs.
 
-=== Details ===
+=== General Recommendation ===
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+The robustness principle is:
+
+  Be conservative in what you do; be liberal in what you accept from others.
+
+However, browsers are too liberal in many cases, and this has led to the proliferation of garbage on the Web. So the new recommendations are as follows.
+
+Consumers should be as liberal as the major implementation(s), but not more liberal than that. Where security considerations are more important, consumers should be more conservative.
+
+Producers should be conservative, to avoid constructs where consumer behaviors differ.
+
+Note that a browser is both a consumer (of HTML documents) and a producer (of DNS and HTTP packets).
+
+=== URLs in HTML ===
