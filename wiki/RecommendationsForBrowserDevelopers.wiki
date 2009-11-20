@@ -42,7 +42,7 @@ When an HTML implementation reads in an HTML file, it first converts the entire 
 
 This section is about resolving URLs found in HTML attributes like `<a href="...">`. After extracting the attribute value, the steps are as follows.
 
-*Step 1*. Remove white space from the beginning and end of the string.
+*Step 1.* Remove white space from the beginning and end of the string.
 
 Step 2. Remove TAB, LF and CR (0x09, 0x0A, 0x0D) from the entire string.
 
