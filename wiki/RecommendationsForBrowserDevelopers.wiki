@@ -30,7 +30,7 @@ However, browsers are too liberal in many cases, and this has led to the prolife
 
   _Consumers should be as liberal as the major implementation(s), but not more liberal than that. Where security considerations are more important, consumers should be more conservative._
 
-  _Producers should be conservative, to avoid constructs where consumer behaviors differ._
+  _Producers should be conservative, to avoid constructs where consumers differ._
 
 Note that a browser is both a consumer (of HTML documents) and a producer (of DNS and HTTP packets).
 
