@@ -1,10 +1,8 @@
-#summary This document makes recommendations for browser developers who wish to transform URLs in the same way as other browsers.
-
-= Introduction =
+== Introduction ==
 
 This document makes recommendations for browser developers who wish to transform URLs in the same way as other browsers.
 
-= Document Conventions =
+== Document Conventions ==
 
 Recommendations are in normal paragraphs like this one.
 
@@ -12,7 +10,7 @@ Recommendations are in normal paragraphs like this one.
 
   _Diffs_ Differences between the browsers are highlighted in paragraphs like this one.
 
-= Details =
+== Details ==
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
