@@ -34,6 +34,26 @@ However, browsers are too liberal in many cases, and this has led to the prolife
 
 Note that a browser is both a consumer (of HTML documents) and a producer (of DNS and HTTP packets).
 
-=== URLs in HTML Attributes ===
+=== Parsing URLs in HTML Attributes ===
 
 When an HTML implementation reads in an HTML file, it first converts the entire file to one of the Unicode encodings, often UTF-16. It then parses the HTML, converting character references like &#12345; to Unicode along the way. The details of these steps are not in scope for this document.
+
+This section is about resolving URLs found in HTML attributes like `<a href="...">`. After extracting the attribute value, the steps are as follows.
+
+Step 1. Remove white space from the beginning and end of the string.
+
+Step 2. Remove TAB, LF and CR from the entire string.
+
+Step 3. Parse the URL, looking for the ASCII syntax characters such as : and /. Developers who wish to be compatible with IE should convert \ to / in all parts before the ?query and #fragment.
+
+Step 4. Host: Unescape the host name. If the result is not well-formed UTF-8, reject the URL.
+
+Step 5. Path: Convert to UTF-8 and %-escape the non-ASCII bytes.
+
+Step 6. Query: If the original encoding of the HTML document was UTF-16- or UTF-32-based, convert the query to UTF-8. Otherwise, convert the query to the original encoding.
+
+Step 7. Fragment: Store the fragment as is.
+
+  _*Rationale*_ Unescaping the fragment and running a character encoding detector on it lead to non-deterministic behavior. Scripts in the document environment can decide what to do with escaped fragments.
+
+  _*Diffs*_ Firefox unescapes the fragment and runs an encoding detector.
