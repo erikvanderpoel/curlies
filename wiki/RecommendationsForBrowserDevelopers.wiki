@@ -8,9 +8,9 @@ This document makes recommendations for browser developers who wish to transform
 
 Recommendations are in normal paragraphs like this one.
 
-  *Rationale* The rationale for the previous paragraph is given in paragraphs like this one.
+  _Rationale_ The rationale for the previous paragraph is given in paragraphs like this one.
 
-  *Diffs* Differences between the browsers are highlighted in paragraphs like this one.
+  _Diffs_ Differences between the browsers are highlighted in paragraphs like this one.
 
 = Details =
 
@@ -18,4 +18,3 @@ Add your content here.  Format your content with:
   * Text in *bold* or _italic_
   * Headings, paragraphs, and lists
   * Automatic links to other wiki pages
-
