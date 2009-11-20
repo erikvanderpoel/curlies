@@ -12,6 +12,15 @@ Recommendations are in normal paragraphs like this one.
 
   _Diffs_ Differences between the browsers are highlighted in paragraphs like this one.
 
+=== Definitions ===
+
+  * URL: Uniform Resource Locator, as used in HTML's <a href="...">, for example.
+    URLs may contain mixtures of %-escaped and not-escaped non-ASCII text,
+    so they are neither pure URIs nor pure IRIs.
+
+  * IRI: Internationalized Resource Identifier,
+    [http://www.rfc-editor.org/rfc/rfc3987.txt RFC 3987].
+
 === Details ===
 
 Add your content here.  Format your content with:
