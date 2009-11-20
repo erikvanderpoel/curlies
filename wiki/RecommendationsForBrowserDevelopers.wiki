@@ -12,6 +12,8 @@ Recommendations are in normal paragraphs like this one.
 
   _*Diffs*_ Differences between the browsers are highlighted in paragraphs like this one.
 
+ASCII characters may be written in the 0xHH notation, where H is a hex digit. Unicode characters are written in the U+HHHH or U+HHHHHH notation.
+
 === Definitions ===
 
   * Encoding: character encoding such as UTF-8, not to be confused with %-escaping.
@@ -42,11 +44,19 @@ This section is about resolving URLs found in HTML attributes like `<a href="...
 
 Step 1. Remove white space from the beginning and end of the string.
 
-Step 2. Remove TAB, LF and CR from the entire string.
+Step 2. Remove TAB, LF and CR (0x09, 0x0A, 0x0D) from the entire string.
+
+  _*Diffs*_ IE removes NUL (0x00) from the entire HTML file.
 
 Step 3. Parse the URL, looking for the ASCII syntax characters such as : and /. Developers who wish to be compatible with IE should convert \ to / in all parts before the ?query and #fragment.
 
-Step 4. Host: Unescape the host name. If the result is not well-formed UTF-8, reject the URL.
+Step 4. Host: Unescape the host name. If the result is not well-formed UTF-8, reject the URL. If the host name contains any ASCII control characters (0x00-0x1F, 0x7F) or any URL syntax character (:@/\;?#), reject the URL.
+
+  _*Rationale*_ Control characters and syntax characters are considered "tricky" and rejected on security grounds.
+
+  _*Diffs*_ Safari performs these steps in the wrong order, leading to a Punycode encoding of a string that contains a dot (0x2E). See the [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/MacOSX10_5_8/host_big5_dns_results.html test results].
+
+If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of these steps fail, reject the URL. IDNA2003 did not explicitly specify what to do with dots (0x2E)
 
 Step 5. Path: Convert to UTF-8 and %-escape the non-ASCII bytes.
 
