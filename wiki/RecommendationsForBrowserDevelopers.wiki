@@ -1,3 +1,5 @@
+Erik van der Poel, 20 Nov 2009
+
 === Introduction ===
 
 This document makes recommendations for browser developers who wish to transform URLs in the same way as other browsers.
