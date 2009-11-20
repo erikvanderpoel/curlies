@@ -14,7 +14,7 @@ Recommendations are in normal paragraphs like this one.
 
 === Definitions ===
 
-  * Encoding: character encoding, not to be confused with %-escaping.
+  * Encoding: character encoding such as UTF-8, not to be confused with %-escaping.
   * Escaping: %-escaping, not to be confused with HTML's &-escaping.
   * IRI: Internationalized Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3987.txt RFC 3987].
   * URI: Uniform Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3986.txt RFC 3986].
