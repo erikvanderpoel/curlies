@@ -24,13 +24,13 @@ Recommendations are in normal paragraphs like this one.
 
 The robustness principle is:
 
-  Be conservative in what you do; be liberal in what you accept from others.
+  _Be conservative in what you do; be liberal in what you accept from others._
 
 However, browsers are too liberal in many cases, and this has led to the proliferation of garbage on the Web. So the new recommendations are as follows.
 
-Consumers should be as liberal as the major implementation(s), but not more liberal than that. Where security considerations are more important, consumers should be more conservative.
+  _Consumers should be as liberal as the major implementation(s), but not more liberal than that. Where security considerations are more important, consumers should be more conservative._
 
-Producers should be conservative, to avoid constructs where consumer behaviors differ.
+  _Producers should be conservative, to avoid constructs where consumer behaviors differ._
 
 Note that a browser is both a consumer (of HTML documents) and a producer (of DNS and HTTP packets).
 
