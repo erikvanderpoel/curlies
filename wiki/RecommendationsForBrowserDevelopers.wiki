@@ -34,4 +34,6 @@ However, browsers are too liberal in many cases, and this has led to the prolife
 
 Note that a browser is both a consumer (of HTML documents) and a producer (of DNS and HTTP packets).
 
-=== URLs in HTML ===
+=== URLs in HTML Attributes ===
+
+When an HTML implementation reads in an HTML file, it first converts the entire file to one of the Unicode encodings, often UTF-16. It then parses the HTML, converting character references like &#12345; to Unicode along the way. The details of these steps are not in scope for this document.
