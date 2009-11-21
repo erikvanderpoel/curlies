@@ -94,4 +94,4 @@ If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of th
 
 === 7 Resolving a URL ===
 
-=== 8 Displyaing a URL ===
+=== 8 Displaying a URL ===
