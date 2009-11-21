@@ -50,7 +50,9 @@ This section is about parsing URLs found in HTML attributes like `<a href="...">
 
 *Step 3.* Parse the URL, looking for the ASCII syntax characters such as : and /. Developers who wish to be compatible with IE should convert \ to / in all parts before the ?query and #fragment. The structure of a URL is `scheme://user:password@host:port/path;params?query#fragment`.
 
-*Step 4.* Host: Unescape the host name. If the result is not well-formed UTF-8, reject the URL. If the host name contains any ASCII control characters (0x00-0x1F, 0x7F) or any URL syntax character (:@/\;?#), reject the URL.
+*Step 4.* User/password: If there is no user:password but there is an @, remove the @.
+
+*Step 5.* Host: Unescape the host name. If the result is not well-formed UTF-8, reject the URL. If the host name contains any ASCII control characters (0x00-0x1F, 0x7F) or any URL syntax character (:@/\;?#), reject the URL.
 
   _*Rationale*_ Control characters and syntax characters are considered "tricky" and rejected on security grounds.
 
@@ -58,15 +60,17 @@ This section is about parsing URLs found in HTML attributes like `<a href="...">
 
 If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of these steps fail, reject the URL. IDNA2003 did not explicitly specify what to do with dots (0x2E) that appear as a result of the Nameprep step. The recommendation is to split the name into labels after the Nameprep step.
 
-*Step 5.* Path: Convert to UTF-8 and %-escape the non-ASCII bytes.
+*Step 6.* Port.
 
-*Step 6.* Params: These are defined for the ftp scheme. Web sites may use the semicolon (;) in URLs with the http/https schemes, but the client treats the params as just another string at the end of the path.
+*Step 7.* Path: Convert to UTF-8 and %-escape the non-ASCII bytes.
+
+*Step 8.* Params: These are defined for the ftp scheme. Web sites may use the semicolon (;) in URLs with the http/https schemes, but the client treats the params as just another string at the end of the path.
 
   _*Diffs*_ Some browsers terminate the host name at the semicolon, while others do not. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/host_ascii_dns_results.html test results].
 
-*Step 6.* Query: If the original encoding of the HTML document was UTF-16- or UTF-32-based, convert the query to UTF-8. Otherwise, convert the query to the original encoding.
+*Step 9.* Query: If the original encoding of the HTML document was UTF-16- or UTF-32-based, convert the query to UTF-8. Otherwise, convert the query to the original encoding.
 
-*Step 7.* Fragment: Store the fragment as is.
+*Step 10.* Fragment: Store the fragment as is.
 
   _*Rationale*_ Unescaping the fragment and running a character encoding detector on it lead to non-deterministic behavior. Scripts in the document environment can decide what to do with escaped fragments.
 
