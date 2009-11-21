@@ -26,15 +26,17 @@ Characters are written in the U+HHHH or U+HHHHHH notation, where H is a hex digi
 
 === 4 Interoperability ===
 
-In order to achieve interoperability, browsers must behave the same way in a number of areas, including protocol elements and script interfaces.
+In order to achieve interoperability, browsers must behave the same way in a number of areas, including protocol elements, script interfaces, user input, and display.
 
 ==== 4.1 Protocol Elements ====
 
-The robustness principle is:
+URLs appear in a number of protocol elements, including HTML attributes and HTTP requests. Also, the host name is often extracted from a URL in order to place it in other protocol elements like DNS packets and the HTTP Host request header.
+
+The robustness principle is usually stated as follows.
 
   _Be conservative in what you do; be liberal in what you accept from others._
 
-However, browsers are too liberal in many cases, and this has led to the proliferation of garbage on the Web. So the new recommendations are as follows.
+However, browsers have often been too liberal, and this has led to the proliferation of garbage on the Web. So the new recommendations are as follows.
 
   _Consumers should be as liberal as the major implementation(s), but not more liberal than that. Where security considerations are more important, consumers should be more conservative._
 
@@ -44,15 +46,13 @@ Note that a browser is both a consumer (of HTML documents, URLs typed by the use
 
 ==== 4.2 Script Interfaces ====
 
-=== 5 Operations on URLs ===
+When browsers read in an HTML document, they build a DOM (Document Object Model) which can then be manipulated by scripts defined in or linked from the document.
 
-Browsers perform a number of different operations on URLs, and there are interoperability consequences for each. URLs are received in a number of ways, including keyboard input and Web documents. When an HTML document is parsed, the browser first builds a DOM, which can then be accessed by scripts, typically written in Javascript. So it is important for browsers to read URLs into the DOM in the same way, so that scripts will see the same things, no matter which browser they are running in.
+==== 4.3 User Input ====
 
-After reading in a document, the user may click on a link. At this point, the browser must build DNS and HTTP packets from the information stored in the DOM. So here again it is important for browsers to transform URLs in the same way as they copy the information from the DOM to network packets.
+==== 4.4 Display ====
 
-The following sections focus on a number of these URL operations.
-
-=== 6 Parsing a URL ===
+=== 5 Parsing a URL ===
 
 When an HTML implementation reads in an HTML file, it first converts the entire file to one of the Unicode character encodings, often UTF-16. It then parses the HTML, converting character references like &#12345; to Unicode along the way. The details of these steps are not in scope for this document.
 
@@ -92,6 +92,8 @@ If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of th
 
   _*Diffs*_ Firefox percent-decodes the fragment and runs a character encoding detector.
 
-=== 7 Resolving a URL ===
+=== 6 Resolving a URL ===
+
+=== 7 User Input of a URL ===
 
 === 8 Displaying a URL ===
