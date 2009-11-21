@@ -1,10 +1,12 @@
 Erik van der Poel, 20 Nov 2009
 
-=== Introduction ===
+=== 1 Introduction ===
 
-This document makes recommendations for browser developers who wish to transform URLs in the same way as other browsers. In addition to interoperability considerations, some security recommendations are made.
+This document makes recommendations for browser developers who wish to transform URLs in the same way as other browsers. In addition to these interoperability considerations, some security recommendations are made.
 
-=== Document Conventions ===
+This document is not intended to be a full specification. It only highlights the differences between the current versions of the browsers (and operating systems).
+
+=== 2 Document Conventions ===
 
 Recommendations are in normal paragraphs like this one.
 
@@ -14,15 +16,19 @@ Recommendations are in normal paragraphs like this one.
 
 ASCII characters may be written in the 0xHH notation, where H is a hex digit. Unicode characters are written in the U+HHHH or U+HHHHHH notation.
 
-=== Definitions ===
+=== 3 Definitions ===
 
-  * Encoding: character encoding such as UTF-8, not to be confused with %-escaping.
-  * Escaping: %-escaping, not to be confused with HTML's &-escaping.
-  * IRI: Internationalized Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3987.txt RFC 3987].
-  * URI: Uniform Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3986.txt RFC 3986].
-  * URL: Uniform Resource Locator, as used in HTML's `<a href="...">`, for example. URLs may contain mixtures of %-escaped and not-escaped non-ASCII text, so they are neither pure URIs nor pure IRIs.
+  * Character encoding: e.g. UTF-8, not to be confused with percent-encoding
+  * IRI: Internationalized Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3987.txt RFC 3987]
+  * Percent-encoding: %HH where H is a hex digit, not to be confused with character encoding
+  * URI: Uniform Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3986.txt RFC 3986]
+  * URL: Uniform Resource Locator, as defined in [http://dev.w3.org/html5/spec/Overview.html#terminology-0 HTML5]. URLs may contain mixtures of percent-encoded and not-percent-encoded non-ASCII text, so they are neither pure URIs nor pure IRIs
 
-=== General Recommendation ===
+=== 4 Interoperability ===
+
+In order to achieve interoperability, browsers must behave the same way in a number of areas, including protocol elements and script interfaces.
+
+==== 4.1 Protocol Elements ====
 
 The robustness principle is:
 
@@ -36,7 +42,9 @@ However, browsers are too liberal in many cases, and this has led to the prolife
 
 Note that a browser is both a consumer (of HTML documents) and a producer (of DNS and HTTP packets).
 
-=== Operations on URLs ===
+==== 4.2 Script Interfaces ====
+
+=== 5 Operations on URLs ===
 
 Browsers perform a number of different operations on URLs, and there are interoperability consequences for each. URLs are received in a number of ways, including keyboard input and Web documents. When an HTML document is parsed, the browser first builds a DOM, which can then be accessed by scripts, typically written in Javascript. So it is important for browsers to read URLs into the DOM in the same way, so that scripts will see the same things, no matter which browser they are running in.
 
@@ -44,7 +52,7 @@ After reading in a document, the user may click on a link. At this point, the br
 
 The following sections focus on a number of these URL operations.
 
-=== Parsing URLs in HTML Attributes ===
+=== 6 Parsing a URL ===
 
 When an HTML implementation reads in an HTML file, it first converts the entire file to one of the Unicode encodings, often UTF-16. It then parses the HTML, converting character references like &#12345; to Unicode along the way. The details of these steps are not in scope for this document.
 
@@ -83,3 +91,7 @@ If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of th
   _*Rationale*_ Unescaping the fragment and running a character encoding detector on it lead to non-deterministic behavior. Scripts in the document environment can decide what to do with escaped fragments.
 
   _*Diffs*_ Firefox unescapes the fragment and runs an encoding detector.
+
+=== 7 Resolving a URL ===
+
+=== 8 Displyaing a URL ===
