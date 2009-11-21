@@ -38,11 +38,11 @@ Note that a browser is both a consumer (of HTML documents) and a producer (of DN
 
 === Operations on URLs ===
 
-Browsers perform a number of different operations on URLs, and there are interoperability consequences for each. URLs are received in a number of ways, including keyboard input ad HTML documents from the Web. When an HTML document is parsed, the browser first builds a DOM, which can then be accessed by scripts, typically written in Javascript. So it is important for browsers to read URLs into the DOM in the same way, so that scripts will see the same things, no matter which browser they are running in.
+Browsers perform a number of different operations on URLs, and there are interoperability consequences for each. URLs are received in a number of ways, including keyboard input and Web documents. When an HTML document is parsed, the browser first builds a DOM, which can then be accessed by scripts, typically written in Javascript. So it is important for browsers to read URLs into the DOM in the same way, so that scripts will see the same things, no matter which browser they are running in.
 
 After reading in a document, the user may click on a link. At this point, the browser must build DNS and HTTP packets from the information stored in the DOM. So here again it is important for browsers to transform URLs in the same way as they copy the information from the DOM to network packets.
 
-The following sections focus on a number of URLs operations.
+The following sections focus on a number of these URL operations.
 
 === Parsing URLs in HTML Attributes ===
 
