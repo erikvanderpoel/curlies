@@ -36,6 +36,14 @@ However, browsers are too liberal in many cases, and this has led to the prolife
 
 Note that a browser is both a consumer (of HTML documents) and a producer (of DNS and HTTP packets).
 
+=== Operations on URLs ===
+
+Browsers perform a number of different operations on URLs, and there are interoperability consequences for each. URLs are received in a number of ways, including keyboard input ad HTML documents from the Web. When an HTML document is parsed, the browser first builds a DOM, which can then be accessed by scripts, typically written in Javascript. So it is important for browsers to read URLs into the DOM in the same way, so that scripts will see the same things, no matter which browser they are running in.
+
+After reading in a document, the user may click on a link. At this point, the browser must build DNS and HTTP packets from the information stored in the DOM. So here again it is important for browsers to transform URLs in the same way as they copy the information from the DOM to network packets.
+
+The following sections focus on a number of URLs operations.
+
 === Parsing URLs in HTML Attributes ===
 
 When an HTML implementation reads in an HTML file, it first converts the entire file to one of the Unicode encodings, often UTF-16. It then parses the HTML, converting character references like &#12345; to Unicode along the way. The details of these steps are not in scope for this document.
@@ -46,7 +54,7 @@ This section is about parsing URLs found in HTML attributes like `<a href="...">
 
 *Step 2.* Remove TAB, LF and CR (0x09, 0x0A, 0x0D) from the entire string.
 
-  _*Diffs*_ IE removes NUL (0x00) from the entire HTML file. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/path_ascii_results.html test results].
+  _*Diffs*_ IE also removes NUL (0x00) from the entire HTML file. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/path_ascii_results.html test results].
 
 *Step 3.* Parse the URL, looking for the ASCII syntax characters such as : and /. Developers who wish to be compatible with IE should convert \ to / in all parts before the ?query and #fragment. The structure of a URL is `scheme://user:password@host:port/path;params?query#fragment`.
 
