@@ -60,6 +60,10 @@ If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of th
 
 *Step 5.* Path: Convert to UTF-8 and %-escape the non-ASCII bytes.
 
+*Step 6.* Params: These are defined for the ftp scheme. Web sites may use the semicolon (;) in URLs with the http/https schemes, but the client treats the params as just another string at the end of the path.
+
+  _*Diffs*_ Some browsers terminate the host name at the semicolon, while others do not. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/host_ascii_dns_results.html test results].
+
 *Step 6.* Query: If the original encoding of the HTML document was UTF-16- or UTF-32-based, convert the query to UTF-8. Otherwise, convert the query to the original encoding.
 
 *Step 7.* Fragment: Store the fragment as is.
