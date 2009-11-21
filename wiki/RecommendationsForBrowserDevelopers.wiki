@@ -96,7 +96,7 @@ If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of th
 
 Scripts may run during the initial loading of a document and also afterwards, e.g. via timers and user input. Browsers should implement the following interfaces in the same way in order to achieve interoperability.
 
-TODO: <a> element's this.href vs this.getAttribute('href')
+TODO: `<a>` element's this.href vs this.getAttribute('href')
 
 === 7 Resolving a URL ===
 
