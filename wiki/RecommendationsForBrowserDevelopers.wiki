@@ -14,7 +14,7 @@ Recommendations are in normal paragraphs like this one.
 
   _*Diffs*_ Differences between the browsers are highlighted in paragraphs like this one.
 
-ASCII characters may be written in the 0xHH notation, where H is a hex digit. Unicode characters are written in the U+HHHH or U+HHHHHH notation.
+Characters are written in the U+HHHH or U+HHHHHH notation, where H is a hex digit.
 
 === 3 Definitions ===
 
@@ -40,7 +40,7 @@ However, browsers are too liberal in many cases, and this has led to the prolife
 
   _Producers should be conservative, to avoid constructs where consumers differ._
 
-Note that a browser is both a consumer (of HTML documents) and a producer (of DNS and HTTP packets).
+Note that a browser is both a consumer (of HTML documents, URLs typed by the user, etc) and a producer (of DNS packets, HTTP requests, etc).
 
 ==== 4.2 Script Interfaces ====
 
