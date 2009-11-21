@@ -92,8 +92,14 @@ If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of th
 
   _*Diffs*_ Firefox percent-decodes the fragment and runs a character encoding detector.
 
-=== 6 Resolving a URL ===
+=== 6 Script Interfaces ===
 
-=== 7 User Input of a URL ===
+Scripts may run during the initial loading of a document and also afterwards, e.g. via timers and user input. Browsers should implement the following interfaces in the same way in order to achieve interoperability.
 
-=== 8 Displaying a URL ===
+TODO: <a> element's this.href vs this.getAttribute('href')
+
+=== 7 Resolving a URL ===
+
+=== 8 User Input of a URL ===
+
+=== 9 Displaying a URL ===
