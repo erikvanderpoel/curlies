@@ -14,7 +14,7 @@ Recommendations are in normal paragraphs like this one.
 
   _*Diffs*_ Differences between the browsers are highlighted in paragraphs like this one.
 
-Characters are written in the U+HHHH or U+HHHHHH notation, where H is a hex digit.
+Characters are written in the Unicode U+HHHH notation, where H is a hex digit.
 
 === 3 Definitions ===
 
@@ -74,7 +74,7 @@ Note: Script interface tests will have to be written to confirm or expand upon t
 
 *Step 3.* Parse the URL, looking for the ASCII syntax characters such as : and /. Developers who wish to be compatible with IE should convert \ to / in all parts before the ?query and #fragment. The structure of a URL is `scheme://user:password@host:port/path;params?query#fragment`.
 
-  _*Diffs*_ Some browsers terminate the host name at a semicolon, while others do not. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/host_ascii_dns_results.html test results].
+  _*Diffs*_ Some browsers terminate the host name at a semicolon, while others do not. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/host_ascii_dns_results.html test results]. Semicolon is used to delimit parameters in the ftp scheme.
 
 *Step 4.* User/password: If there is no user:password but there is an @, remove the @.
 
@@ -92,13 +92,9 @@ If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of th
 
 *Step 6.* For the rest of the URL, percent-decode the unreserved ASCII characters (a-zA-Z0-9, etc). TODO: details.
 
-*Step 8.* Params: These are defined for the ftp scheme. Web sites may use the semicolon (;) in URLs with the http/https schemes, but the client treats the params as just another string at the end of the path.
+  _*Rationale*_ Percent-decoding all characters in the fragment and running a character encoding detector on it leads to non-deterministic behavior. Scripts in the document environment can decide what to do with percent-encoded fragments, since they are more likely to have knowledge of the underlying character encoding.
 
-*Step 9.* Query: If the original character encoding of the HTML document was UTF-16- or UTF-32-based, convert the query to UTF-8. Otherwise, convert the query to the original character encoding.
-
-  _*Rationale*_ Percent-decoding the fragment and running a character encoding detector on it lead to non-deterministic behavior. Scripts in the document environment can decide what to do with percent-encoded fragments, since they are more likely to have knowledge of the underlying character encoding.
-
-  _*Diffs*_ Firefox percent-decodes the fragment and runs a character encoding detector.
+  _*Diffs*_ Firefox percent-decodes all characters in the fragment and runs a heuristic character encoding detector.
 
 === 7 Script Interfaces ===
 
@@ -124,9 +120,15 @@ TODO: Finish moving stuff from section 6 to this section.
 
 Path and params: Convert to UTF-8 and percent-encode the non-ASCII bytes.
 
+Query: If the original character encoding of the HTML document was UTF-16- or UTF-32-based, convert the query to UTF-8. Otherwise, convert the query to the original character encoding.
+
 === 9 User Input of a URL ===
 
+TODO: IDNAbis mapping draft, Turkish i.
+
 === 10 Displaying a URL ===
+
+TODO: Firefox/VeriSign impasse.
 
 === 11 References ===
 
