@@ -1,4 +1,4 @@
-Erik van der Poel, 21 Nov 2009
+Erik van der Poel, 21 Nov 2009, very rough draft
 
 === 1 Introduction ===
 
@@ -24,15 +24,21 @@ Characters are written in the U+HHHH or U+HHHHHH notation, where H is a hex digi
   * URI: Uniform Resource Identifier, [http://www.rfc-editor.org/rfc/rfc3986.txt RFC 3986]
   * URL: Uniform Resource Locator, as defined in [http://dev.w3.org/html5/spec/Overview.html#terminology-0 HTML5]. URLs may contain mixtures of percent-encoded and not-percent-encoded non-ASCII text, so they are neither pure URIs nor pure IRIs
 
-=== 4 Interoperability ===
+=== 4 Scope ===
 
-In order to achieve interoperability, browsers must behave the same way in a number of areas, including protocol elements, script interfaces, user input, and display.
+This document is limited to discussion of HTML, Javascript, HTTP, HTTPS, FTP, IRI, URI, IDNA and DNS. All other markup languages, scripting languages, and network protocols are out of scope.
 
-==== 4.1 Protocol Elements ====
+=== 5 Interoperability ===
+
+In order to achieve interoperability, browsers must behave the same way in a number of areas, including protocol elements, script interfaces, user input, and display. User input and display are just as important because true interoperability includes human-to-human communication, not just machine-level interoperability.
+
+APIs provided by the OS, such as DNS-related APIs called from a browser, are out of scope for this document.
+
+==== 5.1 Protocol Elements ====
 
 URLs appear in a number of protocol elements, including HTML attributes and HTTP requests. Also, the host name is often extracted from a URL in order to place it in other protocol elements like DNS packets and the HTTP Host request header.
 
-The robustness principle is usually stated as follows.
+When sending and receiving protocol elements, browsers must take care to achieve interoperability. The robustness principle is usually stated as follows.
 
   _Be conservative in what you do; be liberal in what you accept from others._
 
@@ -44,19 +50,21 @@ However, browsers have often been too liberal, and this has led to the prolifera
 
 Note that a browser is both a consumer (of HTML documents, URLs typed by the user, etc) and a producer (of DNS packets, HTTP requests, etc).
 
-==== 4.2 Script Interfaces ====
+==== 5.2 Script Interfaces ====
 
-When browsers read in an HTML document, they build a DOM (Document Object Model) which can then be manipulated by scripts defined in or linked from the document.
+When browsers read and parse an HTML document, they build a DOM (Document Object Model) which can then be manipulated by scripts defined in or linked from the document. Browsers must therefore implement script interfaces to the same spec so that scripts can run the same way in any browser.
 
-==== 4.3 User Input ====
+After building the initial DOM and displaying the document, browsers allow users to click on hyperlinks. At that point, browsers must resolve URLs and build network packets such as DNS queries and HTTP requests.
 
-==== 4.4 Display ====
+The following sections cover these areas in more detail.
 
-=== 5 Parsing a URL ===
+=== 6 Parsing a URL ===
 
-When an HTML implementation reads in an HTML file, it first converts the entire file to one of the Unicode character encodings, often UTF-16. It then parses the HTML, converting character references like &#12345; to Unicode along the way. The details of these steps are not in scope for this document.
+When an HTML implementation reads in an HTML file, it first converts the entire file from the original character encoding to one of the Unicode character encodings, often UTF-16. It then parses the HTML, converting character references like &#12345; to Unicode along the way. The details of these steps are not in scope for this document.
 
-This section is about parsing URLs found in HTML attributes like `<a href="...">`. After extracting the attribute value, the steps are as follows. The http, https and ftp schemes are in scope for this document. Other schemes are not in scope.
+This section is about parsing URLs found in HTML attributes like the href in `<a href="...">`. After extracting the attribute value, the steps are as follows.
+
+Note: Script interface tests will have to be written to confirm or expand upon the browser differences mentioned in this section. See section 8 "Resolving a URL" for test results that are more complete at this time. (TODO: In fact, some parts of this section must still be moved to section 8.)
 
 *Step 1.* Remove white space from the beginning and end of the string.
 
@@ -88,18 +96,30 @@ If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of th
 
 *Step 10.* Fragment: Store the fragment as is.
 
-  _*Rationale*_ Percent-decoding the fragment and running a character encoding detector on it lead to non-deterministic behavior. Scripts in the document environment can decide what to do with percent-encoded fragments.
+  _*Rationale*_ Percent-decoding the fragment and running a character encoding detector on it lead to non-deterministic behavior. Scripts in the document environment can decide what to do with percent-encoded fragments, since they are more likely to have knowledge of the underlying character encoding.
 
   _*Diffs*_ Firefox percent-decodes the fragment and runs a character encoding detector.
 
-=== 6 Script Interfaces ===
+=== 7 Script Interfaces ===
 
-Scripts may run during the initial loading of a document and also afterwards, e.g. via timers and user input. Browsers should implement the following interfaces in the same way in order to achieve interoperability.
+Scripts may run during the initial loading of a document and also afterwards, e.g. via timers and user input events. Browsers should implement the following interfaces in the same way in order to achieve interoperability.
 
-TODO: `<a>` element's this.href vs this.getAttribute('href')
+Note: Javascript characters and strings are in UTF-16.
 
-=== 7 Resolving a URL ===
+For the HTML tag `<a href="...">`, the following interfaces are available.
 
-=== 8 User Input of a URL ===
+`this.href` returns the host name in Unicode, even if the original was in Punycode or percent-encoded UTF-8. Originally percent-encoded text in other parts of the URL are returned as is, while originally not-percent-encoded text is returned in Unicode. TODO: Decide whether this interface should return the absolute URL or the relative URL.
 
-=== 9 Displaying a URL ===
+  _*Diffs*_ IE and Firefox do not support percent-encoded UTF-8 in the host name.
+
+`this.getAttribute('href')` returns the host name in Punycode, even if the original was in some other encoding. Other parts of the URL are returned in the format described in section 8 "Resolving a URL". TODO: Decide whether this interface should return the absolute URL or the relative URL.
+
+  _*Diffs*_ Microsoft's interface allows an extra argument that controls relative vs absolute and Unicode vs Punycode host. See [http://msdn.microsoft.com/en-us/library/ms536429(VS.85).aspx their interface].
+
+In summary, this area is a complete mess. Browser developers will have to discuss these, reach an agreement, and clean this up.
+
+=== 8 Resolving a URL ===
+
+=== 9 User Input of a URL ===
+
+=== 10 Displaying a URL ===
