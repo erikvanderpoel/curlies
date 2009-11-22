@@ -1,10 +1,10 @@
-Erik van der Poel, 21 Nov 2009, very rough draft
+Erik van der Poel, 22 Nov 2009, very rough draft
 
 === 1 Introduction ===
 
 This document makes recommendations for browser developers who wish to transform URLs in the same way as other browsers. In addition to these interoperability considerations, some security recommendations are made.
 
-This document is not intended to be a full specification. It only highlights the differences between the current versions of the browsers (and operating systems).
+This document is not intended to be a full specification. It only highlights the differences between the current versions of the browsers and makes a few interoperability and security recommendations.
 
 === 2 Document Conventions ===
 
@@ -76,13 +76,17 @@ Note: Script interface tests will have to be written to confirm or expand upon t
 
 *Step 4.* User/password: If there is no user:password but there is an @, remove the @.
 
-*Step 5.* Host: Percent-decode the host name. If the result is not well-formed UTF-8, reject the URL. If the host name contains any ASCII control characters (U+0000-1F, U+007F) or any URL syntax character (:@/\;?#), reject the URL.
+  _*Diffs*_ IE rejects http/https URLs with user:password, while Firefox accepts them.
+
+*Step 5.* Host: Percent-decode the host name. If the result is not well-formed UTF-8, reject the URL. If the resulting host name contains any ASCII control characters (U+0000-1F, U+007F) or any URL syntax character (:@/\;?#), reject the URL.
 
   _*Rationale*_ Control characters and syntax characters are considered "tricky" and rejected on security grounds.
 
   _*Diffs*_ Safari performs these steps in the wrong order, leading to a Punycode encoding of a string that contains a dot (U+002E). See the [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/MacOSX10_5_8/host_big5_dns_results.html test results].
 
-If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of these steps fail, reject the URL. IDNA2003 did not explicitly specify what to do with dots (U+002E) that appear as a result of the Nameprep step. The recommendation is to split the name into labels after the Nameprep step.
+Convert the non-ASCII dots specified by IDNA2003 to the ASCII dot (U+002E), and divide the host name into labels. If any label begins with "xn--", run it through the Punycode decoder. If the decoding fails or the resulting Unicode string contains character sequences that are not allowed in the versions of IDNA and Unicode implemented by the browser, leave the label in its original xn-- form.
+
+If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of these steps fail, reject the URL. IDNA2003 did not explicitly specify what to do with dots (U+002E) that appear as a result of the Nameprep step. The recommendation is to split the name into labels again after the Nameprep step. Finally, convert these Punycode labels back to Unicode.
 
 *Step 6.* Port.
 
@@ -108,11 +112,11 @@ Note: Javascript characters and strings are in UTF-16.
 
 For the HTML tag `<a href="...">`, the following interfaces are available.
 
-`this.href` returns the host name in Unicode, even if the original was in Punycode or percent-encoded UTF-8. Originally percent-encoded text in other parts of the URL are returned as is, while originally not-percent-encoded text is returned in Unicode. TODO: Decide whether this interface should return the absolute URL or the relative URL.
+`this.href` returns the host name in Unicode, even if the original was in Punycode or percent-encoded UTF-8. Originally percent-encoded text in other parts of the URL are returned as is, while originally not-percent-encoded text is returned in Unicode. Note: This corresponds to IRI. TODO: Decide whether this interface should return the absolute URL or the relative URL.
 
   _*Diffs*_ IE and Firefox do not support percent-encoded UTF-8 in the host name.
 
-`this.getAttribute('href')` returns the host name in Punycode, even if the original was in some other encoding. Other parts of the URL are returned in the format described in section 8 "Resolving a URL". TODO: Decide whether this interface should return the absolute URL or the relative URL.
+`this.getAttribute('href')` returns the host name in Punycode, even if the original was in some other encoding. Other parts of the URL are returned in the format described in section 8 "Resolving a URL". Note: This corresponds to URI. TODO: Decide whether this interface should return the absolute URL or the relative URL.
 
   _*Diffs*_ Microsoft's interface allows an extra argument that controls relative vs absolute and Unicode vs Punycode host. See [http://msdn.microsoft.com/en-us/library/ms536429(VS.85).aspx their interface].
 
@@ -123,3 +127,19 @@ In summary, this area is a complete mess. Browser developers will have to discus
 === 9 User Input of a URL ===
 
 === 10 Displaying a URL ===
+
+=== 11 References ===
+
+TODO: add links below.
+
+HTML5
+
+IDNA2003
+
+IDNAbis
+
+IRI
+
+IRIbis
+
+URI
