@@ -128,7 +128,7 @@ TODO: IDNAbis mapping draft, Turkish i.
 
 === 10 Displaying a URL ===
 
-TODO: Firefox/VeriSign impasse.
+TODO: Firefox/!VeriSign impasse.
 
 === 11 References ===
 
