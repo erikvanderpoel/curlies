@@ -132,7 +132,7 @@ TODO: Finish moving stuff from section 6 to this section.
 
 ==== 8.1 Convert the Host Name ====
 
-Convert any non-ASCII labels to Punycode.
+Convert any non-ASCII labels to Punycode. When an HTTP proxy is being used, the host name becomes part of the URL. Otherwise, the host name is placed in a DNS query and later in the HTTP Host header.
 
   _*Diffs*_ IE6 does not support IDNA. It converts non-ASCII host names using the default character encoding of the user's (localized) Windows OS. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinXP_SP3/IE/host_big5_dns_results.html test results].
 
@@ -150,7 +150,7 @@ If the original character encoding of the HTML document was UTF-16- or UTF-32-ba
 
 Unicode characters that cannot be converted to the original character encoding are converted to decimal NCRs (numeric character references) of the form &#12345; and then the &#; are percent-encoded.
 
-  _*Rationale*_ For HTML forms with method GET, characters that cannot be converted to the original character encoding are converted to NCRs. Since servers cannot tell the difference between a URI that came from a hyperlink and a URI that came from an HTML form, it is better to handle the query part of a hyperlink in the same way as the query part of an HTML form submission. Converting unconvertable characters to question marks loses information.
+  _*Rationale*_ For HTML forms with method GET, characters that cannot be converted to the original character encoding are converted to NCRs. Since servers cannot tell the difference between a URI that came from a hyperlink and a URI that came from an HTML form, it is better to handle the query part of a hyperlink in the same way as the query part of an HTML form submission. Converting unconvertable characters to question marks loses information, so NCRs should be used. Web site operators who are concerned about the fact that the ampersand itself is not escaped should use UTF-8 instead.
 
   _*Diffs*_ IE and Firefox do not convert unconvertable characters to NCRs for hyperlinks. For characters above U+FFFF, IE converts to two question marks, due to the internal UTF-16 encoding. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/query_big5_results.html test results].
 
