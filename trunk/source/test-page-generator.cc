@@ -19,7 +19,6 @@
  * Sniffer (Curlies) project.
  *
  * @author Shaopeng Jia (jia.shao.peng@gmail.com)
- * @author Erik van der Poel (erikvanderpoel@gmail.com)
  */
 
 #include <stdio.h>

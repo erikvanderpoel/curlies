@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  * @author Shaopeng Jia (jia.shao.peng@gmail.com)
- * @author Erik van der Poel (erikvanderpoel@gmail.com)
  */
 
 #include <ctype.h>
