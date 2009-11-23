@@ -64,7 +64,7 @@ When an HTML implementation reads in an HTML file, it first converts the entire 
 
 This section is about parsing URLs found in HTML attributes like the href in `<a href="...">`. After extracting the attribute value, the steps are as follows.
 
-Note: Script interface tests will have to be written to confirm or expand upon the browser differences mentioned in this section. See section 8 "Resolving a URL" for test results that are more complete at this time. (TODO: In fact, some parts of this section must still be moved to section 8.)
+TODO: Script interface tests will have to be written to confirm or expand upon the browser differences mentioned in this section. See section 8 "Resolving a URL" for test results that are more complete at this time.
 
 ==== 6.1 Remove Leading/Trailing Space ====
 
@@ -127,8 +127,6 @@ For the HTML tag `<a href="...">`, the following interfaces are available.
 In summary, this area is a complete mess. Browser developers will have to discuss these, reach an agreement, and clean this up.
 
 === 8 Resolving a URL ===
-
-TODO: Finish moving stuff from section 6 to this section.
 
 ==== 8.1 Convert the Host Name ====
 
