@@ -66,21 +66,31 @@ This section is about parsing URLs found in HTML attributes like the href in `<a
 
 Note: Script interface tests will have to be written to confirm or expand upon the browser differences mentioned in this section. See section 8 "Resolving a URL" for test results that are more complete at this time. (TODO: In fact, some parts of this section must still be moved to section 8.)
 
-*Step 1.* Remove white space from the beginning and end of the string.
+==== 6.1 Remove Leading/Trailing Space ====
 
-*Step 2.* Remove TAB, LF and CR (U+0009, U+000A, U+000D) from the entire string.
+Remove white space from the beginning and end of the string.
+
+==== 6.2 Remove TAB/LF/CR ====
+
+Remove TAB, LF and CR (U+0009, U+000A, U+000D) from the entire string.
 
   _*Diffs*_ IE also removes NUL (U+0000) from the entire HTML file. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/path_ascii_results.html test results].
 
-*Step 3.* Parse the URL, looking for the ASCII syntax characters such as : and /. Developers who wish to be compatible with IE should convert \ to / in all parts before the ?query and #fragment. The structure of a URL is `scheme://user:password@host:port/path;params?query#fragment`.
+==== 6.3 Find the Delimiters ====
+
+Parse the URL, looking for the ASCII syntax characters such as : and /. Developers who wish to be compatible with IE should convert \ to / in all parts before the ?query and #fragment. The structure of a URL is `scheme://user:password@host:port/path;params?query#fragment`.
 
   _*Diffs*_ Some browsers terminate the host name at a semicolon, while others do not. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/host_ascii_dns_results.html test results]. Semicolon is used to delimit parameters in the ftp scheme.
 
-*Step 4.* User/password: If there is no user:password but there is an @, remove the @.
+==== 6.4 Handle User/Password ====
+
+If there is no user:password but there is an @, remove the @.
 
   _*Diffs*_ IE rejects http/https URLs with user:password, while Firefox accepts them.
 
-*Step 5.* Host: Percent-decode the host name. If the result is not well-formed UTF-8, reject the URL. If the resulting host name contains any ASCII control characters (U+0000-1F, U+007F) or any URL syntax character (:@/\;?#%), reject the URL.
+==== 6.5 Handle Host Name ====
+
+Percent-decode the host name. If the result is not well-formed UTF-8, reject the URL. If the resulting host name contains any ASCII control characters (U+0000-1F, U+007F) or any URL syntax character (:@/\;?#%), reject the URL.
 
   _*Rationale*_ Control characters and syntax characters are considered "tricky" and rejected on security grounds.
 
@@ -90,7 +100,9 @@ Convert the non-ASCII dots specified by IDNA2003 to the ASCII dot (U+002E), and 
 
 If there are any non-ASCII bytes, perform Nameprep and Punycode. If either of these steps fail, reject the URL. IDNA2003 did not explicitly specify what to do with dots (U+002E) that appear as a result of the Nameprep step. The recommendation is to split the name into labels again after the Nameprep step. Finally, convert these Punycode labels back to Unicode.
 
-*Step 6.* For the rest of the URL, percent-decode the unreserved ASCII characters (a-zA-Z0-9, etc). TODO: details.
+==== 6.6 Handle the Rest ====
+
+For the rest of the URL, percent-decode the unreserved ASCII characters (a-zA-Z0-9, etc). TODO: details.
 
   _*Rationale*_ Percent-decoding all characters in the fragment and running a character encoding detector on it leads to non-deterministic behavior. Scripts in the document environment can decide what to do with percent-encoded fragments, since they are more likely to have knowledge of the underlying character encoding.
 
@@ -118,9 +130,21 @@ In summary, this area is a complete mess. Browser developers will have to discus
 
 TODO: Finish moving stuff from section 6 to this section.
 
-Path and params: Convert to UTF-8 and percent-encode the non-ASCII bytes.
+==== 8.1 Convert the Host Name ====
 
-Query: If the original character encoding of the HTML document was UTF-16- or UTF-32-based, convert the query to UTF-8. Otherwise, convert the query to the original character encoding.
+Convert any non-ASCII labels to Punycode.
+
+==== 8.2 Convert the Path and Params ====
+
+Convert the path and params to UTF-8 and percent-encode the non-ASCII bytes.
+
+  _*Diffs*_ Firefox2 converted back to the original character encoding (of the HTML document). See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/Firefox/path_big5_results.html test results].
+
+==== 8.3 Convert the Query ====
+
+If the original character encoding of the HTML document was UTF-16- or UTF-32-based, convert the query to UTF-8. Otherwise, convert the query to the original character encoding and percent-encode all resulting non-ASCII bytes and any resulting delimiter-like ASCII bytes (#=&).
+
+  _*Diffs*_ IE does not percent-encode. See [http://curlies.googlecode.com/svn/trunk/test_results/operating_systems/WinVista_SP1/query_big5_results.html test results]. TODO: iso-2022-jp results.
 
 === 9 User Input of a URL ===
 
