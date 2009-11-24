@@ -26,6 +26,7 @@
 #include <vector>
 
 #include "boost/regex.hpp"
+#include "config.h"
 #include "packet-sniffer.h"
 #include "testcases.h"
 
@@ -138,9 +139,15 @@ static void AppendResultToReport(
   }
 }
 
+static FILE* OpenFile(string path, const char* filename) {
+  string full_path = path + filename;
+  return fopen(full_path.c_str(), "w");
+}
+
 int main(int argc, char* argv[]) {
   vector<char*> input_cap_files;
-  for (int i = 1; i < argc; i++) {
+  string output_path(argv[1]);
+  for (int i = 2; i < argc; i++) {
     input_cap_files.push_back(argv[i]);
   }
   vector<string> platform_browser_under_test;
@@ -165,18 +172,18 @@ int main(int argc, char* argv[]) {
   }
 
   // Generate reports
-  FILE* host_ascii_dns_results = fopen("host_ascii_dns_results.html", "w");
-  FILE* host_ascii_http_results = fopen("host_ascii_http_results.html", "w");
-  FILE* path_ascii_results = fopen("path_ascii_results.html", "w");
-  FILE* parameter_ascii_results = fopen("parameter_ascii_results.html", "w");
-  FILE* query_ascii_results = fopen("query_ascii_results.html", "w");
-  FILE* form_get_ascii_results = fopen("form_get_ascii_results.html", "w");
-  FILE* host_big5_dns_results = fopen("host_big5_dns_results.html", "w");
-  FILE* host_big5_http_results = fopen("host_big5_http_results.html", "w");
-  FILE* path_big5_results = fopen("path_big5_results.html", "w");
-  FILE* parameter_big5_results = fopen("parameter_big5_results.html", "w");
-  FILE* query_big5_results = fopen("query_big5_results.html", "w");
-  FILE* form_get_big5_results = fopen("form_get_big5_results.html", "w");
+  FILE* host_ascii_dns_results = OpenFile(output_path, "host_ascii_dns_results.html");
+  FILE* host_ascii_http_results = OpenFile(output_path, "host_ascii_http_results.html");
+  FILE* path_ascii_results = OpenFile(output_path, "path_ascii_results.html");
+  FILE* parameter_ascii_results = OpenFile(output_path, "parameter_ascii_results.html");
+  FILE* query_ascii_results = OpenFile(output_path, "query_ascii_results.html");
+  FILE* form_get_ascii_results = OpenFile(output_path, "form_get_ascii_results.html");
+  FILE* host_big5_dns_results = OpenFile(output_path, "host_big5_dns_results.html");
+  FILE* host_big5_http_results = OpenFile(output_path, "host_big5_http_results.html");
+  FILE* path_big5_results = OpenFile(output_path, "path_big5_results.html");
+  FILE* parameter_big5_results = OpenFile(output_path, "parameter_big5_results.html");
+  FILE* query_big5_results = OpenFile(output_path, "query_big5_results.html");
+  FILE* form_get_big5_results = OpenFile(output_path, "form_get_big5_results.html");
 
   WriteFileHeader(host_ascii_dns_results, platform_browser_under_test, true);
   WriteFileHeader(host_ascii_http_results, platform_browser_under_test, true);
@@ -201,23 +208,26 @@ int main(int argc, char* argv[]) {
                                  form_get_big5_results}};
   // Dimension of this array denotes Encoding
   FILE* dns_file_matrix[] = {host_ascii_dns_results, host_big5_dns_results};
-  for (int i = 0; i < total_num_of_test; i++) {
-    TestCase test_case = entries[i];
-    FILE* output_file;
+  int number_of_ranges = sizeof(kEntrySequenceInReport)/sizeof(kEntrySequenceInReport[0]);
+  for (int i = 0; i < number_of_ranges; i++) {
+    for (int j = kEntrySequenceInReport[i][0]; j <= kEntrySequenceInReport[i][1]; j++) {
+      TestCase test_case = entries[j];
+      FILE* output_file;
 
-    // Generate Http reports
-    output_file =
-      http_file_matrix[test_case.test_encoding][test_case.test_component];
-    AppendResultToReport(test_case,
-                         test_case.test_encoding == kAscii,
-                         test_results_http, output_file);
-
-    // Generate DNS report
-    if (test_case.test_component == kHost) {
-      output_file = dns_file_matrix[test_case.test_encoding];
+      // Generate Http reports
+      output_file =
+          http_file_matrix[test_case.test_encoding][test_case.test_component];
       AppendResultToReport(test_case,
                            test_case.test_encoding == kAscii,
-                           test_results_dns, output_file);
+                           test_results_http, output_file);
+
+      // Generate DNS report
+      if (test_case.test_component == kHost) {
+        output_file = dns_file_matrix[test_case.test_encoding];
+        AppendResultToReport(test_case,
+                             test_case.test_encoding == kAscii,
+                             test_results_dns, output_file);
+      }
     }
   }
 
