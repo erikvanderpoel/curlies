@@ -52,17 +52,26 @@ static void WriteFileHeader(FILE* output_file,
       "tests, please add it in the ../source/testcases.cc, or contact the authors."
       "\n-->\n\n"
       "<html>\n<head>\n<meta http-equiv=\"Content-Type\""
-      "content=\"text/html; charset=US-ASCII\">\n</head>\n<body>\n");
+      "content=\"text/html; charset=US-ASCII\">\n</head>\n<body>\n"
+	  "<h4>Legend</h4>\n"
+	  "<table>\n"
+      "<tr><td>\\xXX<td>= a single byte with that hex encoding\n"
+      "<tr><td>%%XX<td>= three bytes (%%, X and X)\n"
+      "<tr><td>not send<td>= no DNS/HTTP packet was sent\n"
+      "<tr><td>deleted<td>= byte was deleted before packet was sent\n"
+      "<tr><td>terminator<td>= this character was treated as a delimiter\n"
+      "<tr><td>dot<td>= this was treated like the dot in domain names\n"
+      "</table><br>\n");
   fprintf(output_file, "<table border=\"1\">\n");
   fprintf(output_file, "<tr><td>Test</td>");
   if (isAscii) {
-    fprintf(output_file, "<td>C</td>");
+    fprintf(output_file, "<td>Char</td>");
   }
   for (vector<string>::const_iterator it = platform_browser_under_test.begin();
        it != platform_browser_under_test.end(); it++) {
     fprintf(output_file, "<td>%s</td>", (*it).c_str());
   }
-  fprintf(output_file, "<td>Comments</td></tr>\n");
+  fprintf(output_file, "</tr>\n");
 }
 
 static void WriteFileFooter(FILE* output_file) {
