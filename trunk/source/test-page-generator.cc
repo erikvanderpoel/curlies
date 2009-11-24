@@ -27,6 +27,7 @@
 #include <string>
 #include <vector>
 
+#include "config.h"
 #include "testcases.h"
 
 using namespace std;
@@ -116,9 +117,9 @@ static void GenerateFormTestCase(FILE* output_file, int id,
   fprintf(output_file,
           "<tr><td>%d</td> <td>%s</td>\n"
           "<td><form name='%s' method='get'"
-          " action='http://google.com/gen_204' target='%s'>\n"
+          " action='http://%s' target='%s'>\n"
           "<input type='text' name='query' value=",
-          id, display_string, form_name, frame_name);
+          id, display_string, form_name, kNoContentDomain.c_str(), frame_name);
 
   if (strlen(test_string) <= 1) {
     int b = *test_string;
@@ -214,16 +215,17 @@ int main(int argc, const char* argv[]) {
     }
 
     string test_string = string(test_case.test_string);
-    char buffer[30];
-    sprintf(buffer, "%d.wildcard.invalid./", test_case.test_id);
+    char buffer[100];
+    snprintf(buffer, 100, "%d.%s./", test_case.test_id, kWildcardDomain.c_str());
     string prefix(buffer);
     switch (test_component) {
       case kHost:
         if (encoding != kAscii) {
           test_string = "." + test_string + ".";
         }
+        snprintf(buffer, 100, ".%s./", kWildcardDomain.c_str());
         GenerateTestCase(output_file, test_case.test_id,
-                         "", ".wildcard.invalid./",
+                         "", buffer,
                          test_string.c_str(),
                          test_case.test_string_for_display,
                          test_case.should_escape);
