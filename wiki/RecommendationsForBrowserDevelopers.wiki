@@ -1,4 +1,4 @@
-Erik van der Poel, 24 Nov 2009, very rough draft
+Erik van der Poel, 24 Nov 2009, rough draft
 
 === 1 Introduction ===
 
@@ -209,3 +209,5 @@ IRI [http://www.rfc-editor.org/rfc/rfc3987.txt RFC 3987]
 IRIbis [http://tools.ietf.org/html/draft-duerst-iri-bis-07 Draft]
 
 URI [http://www.rfc-editor.org/rfc/rfc3986.txt RFC 3986]
+
+[http://www.w3.org/html/wg/href/draft Web Addresses]
