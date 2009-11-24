@@ -182,18 +182,32 @@ Until this area is better understood, the recommendation is to use a standard ma
 
 TODO: Firefox/!VeriSign impasse.
 
+==== 10.1 Spoofing ====
+
+Some pairs of Unicode characters look exactly the same, e.g. Latin and Cyrillic letter a. The infamous paypal.com spoof showed how easy it was at the time to create a host name that looks exactly the same as the real paypal.com, yet resolve to a different IP address, potentially allowing the attacker to capture user passwords.
+
+The recommendation is to display host names in Unicode only if they contain characters that the user is likely to be familiar with, or characters that cannot be confused with familiar ones. This should probably be based on the language(s) chosen by the user, normally also used with the HTTP Accept-Language header.
+
+When the host name is not displayed in Unicode, it should be displayed in Punycode. Alternatively, the host name can be obscured somehow, but further research is probably needed.
+
+  _*Diffs*_ Firefox displays IDNs in Unicode only when the TLD (top level domain) is in Firefox's white-list. A registry can apply for white-listing by submitting proof of the documentation and enforcement of rules against spoofing. Since VeriSign and Firefox have not reached any agreement, this has unfortunately left IDNs under .com in a state of limbo for several years.
+
+==== 10.2 Bidi ====
+
+Bidi is short for bidirectional text, as used with Arabic and Hebrew, which are written from right to left. The [http://tools.ietf.org/html/draft-ietf-idnabis-bidi-06 IDNA2008 bidi draft] is based on the premise that implementations will use the Unicode bidi algorithm to display host names.
+
+However, it is probably necessary to conduct further research to determine the optimum display of URLs that contain bidi text. It is not clear that a simple application of the Unicode bidi algorithm (without override characters) would always yield a string that can easily be understood by the average bidi user.
+
 === 11 References ===
 
-TODO: add links below.
+[http://dev.w3.org/html5/spec/Overview.html HTML5]
 
-HTML5
+IDNA2003 [http://www.rfc-editor.org/rfc/rfc3490.txt Main] [http://www.rfc-editor.org/rfc/rfc3491.txt Nameprep] [http://www.rfc-editor.org/rfc/rfc3492.txt Punycode]
 
-IDNA2003
+IDNA2008 [http://tools.ietf.org/html/draft-ietf-idnabis-defs-12 Definitions] [http://tools.ietf.org/html/draft-ietf-idnabis-protocol-17 Protocol] [http://tools.ietf.org/html/draft-ietf-idnabis-tables-08 Table] [http://tools.ietf.org/html/draft-ietf-idnabis-bidi-06 Bidi] [http://tools.ietf.org/html/draft-ietf-idnabis-rationale-14 Rationale] [http://tools.ietf.org/html/draft-ietf-idnabis-mappings-05 Mapping]
 
-IDNAbis
+IRI [http://www.rfc-editor.org/rfc/rfc3987.txt RFC 3987]
 
-IRI
+IRIbis [http://tools.ietf.org/html/draft-duerst-iri-bis-07 Draft]
 
-IRIbis
-
-URI
+URI [http://www.rfc-editor.org/rfc/rfc3986.txt RFC 3986]
