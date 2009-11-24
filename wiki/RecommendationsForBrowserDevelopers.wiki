@@ -26,7 +26,7 @@ Characters are written in the Unicode U+HHHH notation, where H is a hex digit.
 
 === 4 Scope ===
 
-This document is limited to discussion of HTML, JavaScript, HTTP, HTTPS, FTP, IRI, URI, IDNA and DNS. All other markup languages, scripting languages, and network protocols are out of scope.
+This document is limited to discussion of HTML, !JavaScript, HTTP, HTTPS, FTP, IRI, URI, IDNA and DNS. All other markup languages, scripting languages, and network protocols are out of scope.
 
 === 5 Interoperability ===
 
@@ -112,7 +112,7 @@ For the rest of the URL, percent-decode the unreserved ASCII characters (a-zA-Z0
 
 Scripts may run during the initial loading of a document and also afterwards, e.g. via timers and user input events. Browsers should implement the following interfaces in the same way in order to achieve interoperability.
 
-Note: JavaScript characters and strings are in UTF-16.
+Note: !JavaScript characters and strings are in UTF-16.
 
 For the HTML tag `<a href="...">`, the following interfaces are available.
 
