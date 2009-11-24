@@ -180,8 +180,6 @@ Until this area is better understood, the recommendation is to use a standard ma
 
 === 10 Displaying a URL ===
 
-TODO: Firefox/!VeriSign impasse.
-
 ==== 10.1 Spoofing ====
 
 Some pairs of Unicode characters look exactly the same, e.g. Latin and Cyrillic letter a. The infamous paypal.com spoof showed how easy it was at the time to create a host name that looks exactly the same as the real paypal.com, yet resolve to a different IP address, potentially allowing the attacker to capture user passwords.
@@ -190,7 +188,7 @@ The recommendation is to display host names in Unicode only if they contain char
 
 When the host name is not displayed in Unicode, it should be displayed in Punycode. Alternatively, the host name can be obscured somehow, but further research is probably needed.
 
-  _*Diffs*_ Firefox displays IDNs in Unicode only when the TLD (top level domain) is in Firefox's white-list. A registry can apply for white-listing by submitting proof of the documentation and enforcement of rules against spoofing. Since VeriSign and Firefox have not reached any agreement, this has unfortunately left IDNs under .com in a state of limbo for several years.
+  _*Diffs*_ Firefox displays IDNs in Unicode only when the TLD (top level domain) is in Firefox's white-list. A registry can apply for white-listing by submitting proof of the documentation and enforcement of rules against spoofing. Since !VeriSign and Firefox have not reached any agreement, this has unfortunately left IDNs under .com in a state of limbo for several years.
 
 ==== 10.2 Bidi ====
 
