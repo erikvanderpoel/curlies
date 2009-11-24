@@ -25,8 +25,17 @@ tests, please add it in the ../source/testcases.cc, or contact the authors.
 <meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
 </head>
 <body>
+<h4>Legend</h4>
+<table>
+<tr><td>\xXX<td>= a single byte with that hex encoding
+<tr><td>%XX<td>= three bytes (%, X and X)
+<tr><td>not send<td>= no DNS/HTTP packet was sent
+<tr><td>deleted<td>= byte was deleted before packet was sent
+<tr><td>terminator<td>= this character was treated as a delimiter
+<tr><td>dot<td>= this was treated like the dot in domain names
+</table><br>
 <table border="1">
-<tr><td>Test</td><td>MacOSX10_5_8/FF3_5_3</td><td>MacOSX10_5_8/Safari4_0_3</td><td>MacOSX10_5_8/Chrome4_0_2</td><td>MacOSX10_5_8/Opera_10</td></tr>
+<tr><td>Test</td><td>MacOSX10.5.8/FF3.5.3</td><td>MacOSX10.5.8/Safari4.0.3</td><td>MacOSX10.5.8/Chrome4.0.2</td><td>MacOSX10.5.8/Opera.10</td></tr>
 <tr><td>\xA2\xCC</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td></tr>
 <tr><td>\xA4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td></tr>
 <tr><td>&amp;#x5341;&amp;#x431;</td><td>%A4Q%26%231073%3B</td><td>%A4Q%26%231073%3B</td><td>%A4Q%26%231073%3B</td><td>%A4Q%26%231073%3B</td></tr>
