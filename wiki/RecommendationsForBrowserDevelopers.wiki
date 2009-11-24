@@ -172,7 +172,11 @@ Unicode characters that cannot be converted to the original character encoding a
 
 === 9 User Input of a URL ===
 
-TODO: IDNAbis mapping draft, Turkish i.
+The [http://tools.ietf.org/html/draft-ietf-idnabis-mappings-05 IDNA2008 mapping draft] suggests mapping the host name only in the UI (user interface), and not in interchanged host names such as those in HTML hrefs. One example where such mapping might be applied is the Turkish letter i, which has special mappings between upper and lower case.
+
+Extreme caution is advised in this area, since it is difficult for an implementation to tell whether an input is from the current user or has been copied-and-pasted from another person who may be expecting different case mappings.
+
+Until this area is better understood, the recommendation is to use a standard mapping similar to IDNA2003. Although this does not serve Turkish keyboard input very well, it is probably the most prudent thing to do at the moment.
 
 === 10 Displaying a URL ===
 
