@@ -25,26 +25,27 @@ tests, please add it in the ../source/testcases.cc, or contact the authors.
 <meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
 </head>
 <body>
+<h1>Host (DNS) Test Results</h1>
 <h4>Legend</h4>
 <table>
 <tr><td>\xXX<td>= a single byte with that hex encoding
 <tr><td>%XX<td>= three bytes (%, X and X)
-<tr><td>not send<td>= no DNS/HTTP packet was sent
+<tr><td>not sent<td>= no DNS/HTTP packet was sent
 <tr><td>deleted<td>= byte was deleted before packet was sent
 <tr><td>terminator<td>= this character was treated as a delimiter
 <tr><td>dot<td>= this was treated like the dot in domain names
 </table><br>
 <table border="1">
-<tr><td>Test</td><td>WinXP.SP3/Safari4.0.3</td><td>WinVista.SP1/Safari4.0.3</td><td>MacOSX10.5.8/Safari4.0.3</td></tr>
-<tr><td>\xA2\xCC</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
-<tr><td>\xA4Q</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
-<tr><td>%a2%cc</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
-<tr><td>%a4%51</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
-<tr bgcolor='#FFFF00'><td>%e5%8d%81</td><td>......</td><td>......</td><td>xn--kkr</td></tr>
-<tr><td>\xA2\xCC%20%a2%cc</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
-<tr><td>\xA2\xCC%a2%cc</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
-<tr><td>&amp;#x5341;</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
-<tr><td>&amp;#x5341;%2ecom</td><td>xn--.com-9b5j</td><td>xn--.com-9b5j</td><td>xn--.com-9b5j</td></tr>
+<tr><th>ID</th><th>Test</th><th>WinXP.SP3/Safari4.0.3</th><th>WinVista.SP1/Safari4.0.3</th><th>MacOSX10.5.8/Safari4.0.3</th></tr>
+<tr><td>1024</td><td>\xA2\xCC</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr><td>1025</td><td>\xA4Q</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr><td>1026</td><td>%a2%cc</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>1028</td><td>%a4%51</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
+<tr bgcolor='#FFFF00'><td>1029</td><td>%e5%8d%81</td><td>......</td><td>......</td><td>xn--kkr</td></tr>
+<tr><td>1030</td><td>\xA2\xCC%20%a2%cc</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>1031</td><td>\xA2\xCC%a2%cc</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>1032</td><td>&amp;#x5341;</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr><td>1033</td><td>&amp;#x5341;%2ecom</td><td>xn--.com-9b5j</td><td>xn--.com-9b5j</td><td>xn--.com-9b5j</td></tr>
 </table>
 </body>
 </html>

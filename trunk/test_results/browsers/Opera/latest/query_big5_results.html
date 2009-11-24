@@ -25,30 +25,32 @@ tests, please add it in the ../source/testcases.cc, or contact the authors.
 <meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
 </head>
 <body>
+<h1>Query (HTTP) Test Results</h1>
 <h4>Legend</h4>
 <table>
 <tr><td>\xXX<td>= a single byte with that hex encoding
 <tr><td>%XX<td>= three bytes (%, X and X)
-<tr><td>not send<td>= no DNS/HTTP packet was sent
+<tr><td>not sent<td>= no DNS/HTTP packet was sent
 <tr><td>deleted<td>= byte was deleted before packet was sent
 <tr><td>terminator<td>= this character was treated as a delimiter
 <tr><td>dot<td>= this was treated like the dot in domain names
 </table><br>
 <table border="1">
-<tr><td>Test</td><td>WinXP.SP3/Opera10</td><td>WinVista.SP1/Opera10</td><td>MacOSX10.5.8/Opera10</td><td>Ubuntu9.04/Opera9.64</td></tr>
-<tr><td>\xA2\xCC</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td></tr>
-<tr bgcolor='#FFFF00'><td>\xA4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td><td>not sent</td></tr>
-<tr><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td></tr>
-<tr><td>%a4%51</td><td>%a4%51</td><td>%a4%51</td><td>%a4%51</td><td>%a4%51</td></tr>
-<tr><td>\xA2\xCC%20%a2%cc</td><td>%A4Q%20%a2%cc</td><td>%A4Q%20%a2%cc</td><td>%A4Q%20%a2%cc</td><td>%A4Q%20%a2%cc</td></tr>
-<tr><td>%61%62%63</td><td>%61%62%63</td><td>%61%62%63</td><td>%61%62%63</td><td>%61%62%63</td></tr>
-<tr><td>a b</td><td>a%20b</td><td>a%20b</td><td>a%20b</td><td>a%20b</td></tr>
-<tr><td>&amp;#x5341;</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td></tr>
-<tr><td>%</td><td>%</td><td>%</td><td>%</td><td>%</td></tr>
-<tr><td>%gg</td><td>%gg</td><td>%gg</td><td>%gg</td><td>%gg</td></tr>
-<tr><td>&amp;#x10000;</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
-<tr><td>&amp;#x431;</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
-<tr bgcolor='#FFFF00'><td>&amp;#x5341;&amp;#x431;</td><td>%A4Q?</td><td>%A4Q?</td><td>%A4Q?</td><td>not sent</td></tr>
+<tr><th>ID</th><th>Test</th><th>WinXP.SP3/Opera10</th><th>WinVista.SP1/Opera10</th><th>MacOSX10.5.8/Opera10</th><th>Ubuntu9.04/Opera9.64</th></tr>
+<tr><td>1040</td><td>\xA2\xCC</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td></tr>
+<tr><th>ID</th><th>Test</th><th>WinXP.SP3/Opera10</th><th>WinVista.SP1/Opera10</th><th>MacOSX10.5.8/Opera10</th><th>Ubuntu9.04/Opera9.64</th></tr>
+<tr bgcolor='#FFFF00'><td>1041</td><td>\xA4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td><td>not sent</td></tr>
+<tr><td>1042</td><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td></tr>
+<tr><td>1043</td><td>%a4%51</td><td>%a4%51</td><td>%a4%51</td><td>%a4%51</td><td>%a4%51</td></tr>
+<tr><td>1044</td><td>\xA2\xCC%20%a2%cc</td><td>%A4Q%20%a2%cc</td><td>%A4Q%20%a2%cc</td><td>%A4Q%20%a2%cc</td><td>%A4Q%20%a2%cc</td></tr>
+<tr><td>1045</td><td>%61%62%63</td><td>%61%62%63</td><td>%61%62%63</td><td>%61%62%63</td><td>%61%62%63</td></tr>
+<tr><td>1046</td><td>a b</td><td>a%20b</td><td>a%20b</td><td>a%20b</td><td>a%20b</td></tr>
+<tr><td>1047</td><td>&amp;#x5341;</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td><td>%A4Q</td></tr>
+<tr><td>1048</td><td>%</td><td>%</td><td>%</td><td>%</td><td>%</td></tr>
+<tr><td>1049</td><td>%gg</td><td>%gg</td><td>%gg</td><td>%gg</td><td>%gg</td></tr>
+<tr><td>1050</td><td>&amp;#x10000;</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+<tr><td>1051</td><td>&amp;#x431;</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+<tr bgcolor='#FFFF00'><td>1052</td><td>&amp;#x5341;&amp;#x431;</td><td>%A4Q?</td><td>%A4Q?</td><td>%A4Q?</td><td>not sent</td></tr>
 </table>
 </body>
 </html>
