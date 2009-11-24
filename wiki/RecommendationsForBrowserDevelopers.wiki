@@ -26,7 +26,7 @@ Characters are written in the Unicode U+HHHH notation, where H is a hex digit.
 
 === 4 Scope ===
 
-This document is limited to discussion of HTML, !JavaScript, HTTP, HTTPS, FTP, IRI, URI, IDNA and DNS. All other markup languages, scripting languages, and network protocols are out of scope.
+This document is limited to discussion of HTML, !JavaScript, HTTP, HTTPS, FTP, IRI, URI, URL, IDNA and DNS. All other markup languages, scripting languages, and network protocols are out of scope.
 
 === 5 Interoperability ===
 
@@ -124,9 +124,23 @@ For the HTML tag `<a href="...">`, the following interfaces are available.
 
   _*Diffs*_ Microsoft's interface allows an extra argument that controls relative vs absolute and Unicode vs Punycode host. See [http://msdn.microsoft.com/en-us/library/ms536429(VS.85).aspx their interface]. IE only returns Punycode when 2 is passed for the second argument.
 
+`this.hostname` should return Unicode.
+
+  _*Diffs*_ Chrome3 returns Punycode, while IE8, Firefox3.5 and Opera10 return Unicode.
+
+`this.pathname` should return Unicode.
+
+  _*Diffs*_ Firefox3.5 and Chrome3 return percent-encoded UTF-8, while IE8 and Opera10 return Unicode.
+
+`this.search` should return Unicode.
+
+  _*Diffs*_ IE8 returns Unicode, while Firefox3.5, Chrome3 and Opera10 return percent-encoded original character encoding.
+
 In summary, this area is a complete mess. Browser developers will have to discuss these, reach an agreement, and clean this up.
 
 === 8 Resolving a URL ===
+
+After parsing an HTML document and building the DOM, users may click on links and scripts may access interfaces that are defined to return resolved URLs and URL components. This section describes the resolution of URLs and URL components.
 
 ==== 8.1 Convert the Host Name ====
 
