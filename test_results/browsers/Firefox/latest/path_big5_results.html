@@ -25,8 +25,17 @@ tests, please add it in the ../source/testcases.cc, or contact the authors.
 <meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
 </head>
 <body>
+<h4>Legend</h4>
+<table>
+<tr><td>\xXX<td>= a single byte with that hex encoding
+<tr><td>%XX<td>= three bytes (%, X and X)
+<tr><td>not send<td>= no DNS/HTTP packet was sent
+<tr><td>deleted<td>= byte was deleted before packet was sent
+<tr><td>terminator<td>= this character was treated as a delimiter
+<tr><td>dot<td>= this was treated like the dot in domain names
+</table><br>
 <table border="1">
-<tr><td>Test</td><td>WinXP_SP3/FF3_5</td><td>WinVista_SP1/FF3_5</td><td>MacOSX10_5_7/FF3_5</td><td>Ubuntu9_04/FF3_5</td></tr>
+<tr><td>Test</td><td>WinXP.SP3/FF3.5.3</td><td>WinVista.SP1/FF3.5.3</td><td>MacOSX10.5.8/FF3.5.3</td><td>Ubuntu9.04/FF3.5</td></tr>
 <tr><td>\xA2\xCC</td><td>%E5%8D%81</td><td>%E5%8D%81</td><td>%E5%8D%81</td><td>%E5%8D%81</td></tr>
 <tr><td>\xA4Q</td><td>%E5%8D%81</td><td>%E5%8D%81</td><td>%E5%8D%81</td><td>%E5%8D%81</td></tr>
 <tr><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td></tr>

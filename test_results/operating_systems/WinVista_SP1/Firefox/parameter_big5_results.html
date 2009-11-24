@@ -25,9 +25,18 @@ tests, please add it in the ../source/testcases.cc, or contact the authors.
 <meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
 </head>
 <body>
+<h4>Legend</h4>
+<table>
+<tr><td>\xXX<td>= a single byte with that hex encoding
+<tr><td>%XX<td>= three bytes (%, X and X)
+<tr><td>not send<td>= no DNS/HTTP packet was sent
+<tr><td>deleted<td>= byte was deleted before packet was sent
+<tr><td>terminator<td>= this character was treated as a delimiter
+<tr><td>dot<td>= this was treated like the dot in domain names
+</table><br>
 <table border="1">
-<tr><td>Test</td><td>WinVista_SP1/FF2_0_0</td><td>WinVista_SP1/FF3_0_11</td><td>WinVista_SP1/FF3_5</td></tr>
-<tr bgcolor='#FFFF00'><td>\xA2\xCC</td><td>%A4Q</td><td>%E5%8D%81</td><td>%E5%8D%81</td></tr>
+<tr><td>Test</td><td>WinVista.SP1/FF2.0.0</td><td>WinVista.SP1/FF3.0.11</td><td>WinVista.SP1/FF3.5</td><td>WinVista.SP1/FF3.5.3</td></tr>
+<tr bgcolor='#FFFF00'><td>\xA2\xCC</td><td>%A4Q</td><td>%E5%8D%81</td><td>%E5%8D%81</td><td>%E5%8D%81</td></tr>
 </table>
 </body>
 </html>

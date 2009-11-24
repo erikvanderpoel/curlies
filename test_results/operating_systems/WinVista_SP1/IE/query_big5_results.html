@@ -25,21 +25,30 @@ tests, please add it in the ../source/testcases.cc, or contact the authors.
 <meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
 </head>
 <body>
+<h4>Legend</h4>
+<table>
+<tr><td>\xXX<td>= a single byte with that hex encoding
+<tr><td>%XX<td>= three bytes (%, X and X)
+<tr><td>not send<td>= no DNS/HTTP packet was sent
+<tr><td>deleted<td>= byte was deleted before packet was sent
+<tr><td>terminator<td>= this character was treated as a delimiter
+<tr><td>dot<td>= this was treated like the dot in domain names
+</table><br>
 <table border="1">
-<tr><td>Test</td><td>WinVista_SP1/IE7_0_6</td><td>WinVista_SP1/IE8_0_6</td></tr>
-<tr><td>\xA2\xCC</td><td>\xA4Q</td><td>\xA4Q</td></tr>
-<tr><td>\xA4Q</td><td>\xA4Q</td><td>\xA4Q</td></tr>
+<tr><td>Test</td><td>WinVista.SP1/IE7.0.6</td><td>WinVista.SP1/IE8.0.6</td></tr>
+<tr><td>\xA2\xCC</td><td>.Q</td><td>.Q</td></tr>
+<tr><td>\xA4Q</td><td>.Q</td><td>.Q</td></tr>
 <tr><td>%a2%cc</td><td>%a2%cc</td><td>%a2%cc</td></tr>
 <tr><td>%a4%51</td><td>%a4%51</td><td>%a4%51</td></tr>
-<tr><td>\xA2\xCC%20%a2%cc</td><td>\xA4Q%20%a2%cc</td><td>\xA4Q%20%a2%cc</td></tr>
+<tr><td>\xA2\xCC%20%a2%cc</td><td>.Q%20%a2%cc</td><td>.Q%20%a2%cc</td></tr>
 <tr><td>%61%62%63</td><td>%61%62%63</td><td>%61%62%63</td></tr>
 <tr><td>a b</td><td>a%20b</td><td>a%20b</td></tr>
-<tr><td>&amp;#x5341;</td><td>\xA4Q</td><td>\xA4Q</td></tr>
+<tr><td>&amp;#x5341;</td><td>.Q</td><td>.Q</td></tr>
 <tr><td>%</td><td>%</td><td>%</td></tr>
 <tr><td>%gg</td><td>%gg</td><td>%gg</td></tr>
 <tr><td>&amp;#x10000;</td><td>??</td><td>??</td></tr>
 <tr><td>&amp;#x431;</td><td>?</td><td>?</td></tr>
-<tr><td>&amp;#x5341;&amp;#x431;</td><td>\xA4Q?</td><td>\xA4Q?</td></tr>
+<tr><td>&amp;#x5341;&amp;#x431;</td><td>.Q?</td><td>.Q?</td></tr>
 </table>
 </body>
 </html>
