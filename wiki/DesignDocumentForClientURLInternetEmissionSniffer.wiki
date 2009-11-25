@@ -1,6 +1,6 @@
 Shaopeng Jia and Erik van der Poel, 21 Nov 2009
 
-=== Introduction ===
+== Introduction ==
 
 This document is a design doc for an automated browser URL behavior testing tool. It describes the need for browser URL behavior testing, the current solution with this tool, and possible future plans to enhance the tool.
 
@@ -92,4 +92,8 @@ http://9pz10249pz9qz.十.9qz.box.yauz.ch./
 
     As of July 2009,  Opera enables HTTP Pipelining by default (and there is no easy way to turn it off); Firefox supports it, but set it as off by default; IE and Chrome don't currently support it.
 
-    Our packet sniffer doesn't work reliably under HTTP pipelining because it assumes a HTTP packet contains one and only one "9pz" pair and "9qz" pair. The hostname uniqueness prevents HTTP pipelining as HTTP packets cannot be pipelined when they are sent to different sockets.           
+    Our packet sniffer doesn't work reliably under HTTP pipelining because it assumes a HTTP packet contains one and only one "9pz" pair and "9qz" pair. The hostname uniqueness prevents HTTP pipelining as HTTP packets cannot be pipelined when they are sent to different sockets.
+  * For HTTP FORM test, empty iframes are used with the target attribute of each form pointing to the corresponding iframe. This is necessary to ensure all the forms will be automatically submitted when the page is loaded. Without the target attribute pointing to unique iframe, submitting the first form will reload the page before subsequent forms are able to be submitted. 
+  * The trailing dot in the host part of the URL causes the browser to access the external Internet rather than the internal Intranet.
+  * The domain wildcard.invalid and http204.invalid should be replaced with valid domains accordingly for testing. This could be easily done by modifying kWildcardDomain and kNoContentDomain in [http://code.google.com/p/curlies/source/browse/trunk/source/config.h source/config.h].
+           
