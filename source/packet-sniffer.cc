@@ -82,7 +82,7 @@ void ExtractResultsFromCapFile(const char* filename,
   packet = pcap_next(handle, &pkthdr);
   const vector<string>::iterator results_begin = results->begin();
   while (packet) {
-    const char* packet_end = (const char*)packet + pkthdr.len;
+    const char* packet_end = (const char*)packet + pkthdr.len - 1; // inclusive
     bpf_u_int32 pkt_length_remaining = pkthdr.len;
     const char* temp = memstr((const char*) packet,
                               pkt_length_remaining, "9pz");
