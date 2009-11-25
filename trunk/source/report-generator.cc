@@ -76,16 +76,16 @@ static void WriteFileHeader(FILE* output_file,
       "<h1>");
   fprintf(output_file, title.c_str());
   fprintf(output_file,
-		  "</h1>\n"
-		  "<h4>Legend</h4>\n"
-		  "<table>\n"
-		  "<tr><td>\\xXX<td>= a single byte with that hex encoding\n"
-		  "<tr><td>%%XX<td>= three bytes (%%, X and X)\n"
-		  "<tr><td>not sent<td>= no DNS/HTTP packet was sent\n"
-		  "<tr><td>deleted<td>= byte was deleted before packet was sent\n"
-		  "<tr><td>terminator<td>= this character was treated as a delimiter\n"
-		  "<tr><td>dot<td>= this was treated like the dot in domain names\n"
-		  "</table><br>\n");
+          "</h1>\n"
+          "<h4>Legend</h4>\n"
+          "<table>\n"
+          "<tr><td>\\xXX<td>= a single byte with that hex encoding\n"
+          "<tr><td>%%XX<td>= three bytes (%%, X and X)\n"
+          "<tr><td>not sent<td>= no DNS/HTTP packet was sent\n"
+          "<tr><td>deleted<td>= byte was deleted before packet was sent\n"
+          "<tr><td>terminator<td>= this character was treated as a delimiter\n"
+          "<tr><td>dot<td>= this was treated like the dot in domain names\n"
+          "</table><br>\n");
   fprintf(output_file, "<table border=\"1\">\n");
 }
 
@@ -234,7 +234,7 @@ int main(int argc, char* argv[]) {
           http_file_matrix[test_case.test_encoding][test_case.test_component];
       int offset = j - kEntrySequenceInReport[i][0];
       if (offset % 16 == 0) {
-    	  WriteResultTableHeading(output_file, test_case.test_encoding == kAscii, platform_browser_under_test);
+        WriteResultTableHeading(output_file, test_case.test_encoding == kAscii, platform_browser_under_test);
       }
       AppendResultToReport(test_case,
                            test_case.test_encoding == kAscii,
