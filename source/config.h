@@ -34,18 +34,18 @@ const std::string kNoContentDomain("http204.invalid");
 // cases that should be generated. Within a range, results are generated
 // according to the ascending order of the id.
 const int kEntrySequenceInReport[][2] = {
-		{128, 255},
-		{0, 127},
-		{384, 511},
-		{256, 383},
-		{640, 767},
-		{512, 639},
-		{896, 1023},
-		{768, 895},
-		{1024, 1052},
-		{1181, 1308},
-		{1053, 1180},
-		{1309, 1311}
+    {128, 255},
+    {0, 127},
+    {384, 511},
+    {256, 383},
+    {640, 767},
+    {512, 639},
+    {896, 1023},
+    {768, 895},
+    {1024, 1052},
+    {1181, 1308},
+    {1053, 1180},
+    {1309, 1311}
 };
 
 #endif /* CONFIG_H_ */
