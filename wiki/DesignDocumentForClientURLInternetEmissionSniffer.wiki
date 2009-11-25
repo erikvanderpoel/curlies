@@ -1,30 +1,31 @@
-Shaopeng Jia and Erik van der Poel, 21 Nov 2009
+Shaopeng Jia and Erik van der Poel, 25 Nov 2009
 
 == Introduction ==
 
-This document is a design doc for an automated browser URL behavior testing tool. It describes the need for browser URL behavior testing, the current solution with this tool, and possible future plans to enhance the tool.
+This is a design document for an automated browser URL transformation testing tool. It describes the need for browser URL behavior testing, the current solution, and possible future plans to enhance the tool.
 
 == Background ==
 
-There are many URL parsing, escaping and encoding details, and the implementations among different browsers on different platforms often differ in subtle ways. IT organizations are interested in being compatible with the major implementations, and in canonicalizing URLs for storage in our internal data structures. The tool described here will help people stay informed of the major implementations as they evolve over time. We also publish some of [http://code.google.com/p/curlies/source/browse/trunk/test_results the differences between the browsers] and [http://code.google.com/p/curlies/wiki/RecommendationsForBrowserDevelopers recommendations] in the hope that they will align more.
+There are many URL parsing, escaping and encoding details, and the browsers and platforms often differ in subtle ways. Client implementers are interested in being compatible with the major implementations, and in canonicalizing URLs for storage in internal data structures. The tool described here will help people stay informed of the major implementations as they evolve over time. We also publish some of [http://code.google.com/p/curlies/source/browse/trunk/test_results the differences between the browsers] and [http://code.google.com/p/curlies/wiki/RecommendationsForBrowserDevelopers recommendations for browser developers] in the hope that browsers will align more.
 
 == Current Situation ==
 
-Testing are being carried out across all major modern browsers (IE 6, 7, 8; Firefox 2, 3.0, 3.5;  Safari 3, 4; Chrome 2, 3; Opera 9) on all the major platforms (Windows XP, Windows Vista, Mac and Linux), and without any proxy in place. Over [http://code.google.com/p/curlies/source/browse/trunk/test_pages 1300 tests] are created to test various parts of the a URL (such as host, path and query, etc.) and HTML form submissions. The generated reports are available [http://code.google.com/p/curlies/source/browse/trunk/test_results here]. Read the [http://code.google.com/p/curlies/source/browse/trunk/test_results/README README file] for how the results folders are organized. When viewing the results in code.google.com, click "View raw file" to see the well-formatted reports.
+Tests are being carried out across all major modern browsers (IE 6, 7, 8; Firefox 2, 3.0, 3.5;  Safari 3, 4; Chrome 2, 3; Opera 9, 10) on all the major platforms (Windows XP, Windows Vista, Mac and Linux). Over [http://code.google.com/p/curlies/source/browse/trunk/test_pages 1300 tests] have been created to test various parts of the URL (such as host, path, query, etc) and HTML form submissions. The generated reports are available [http://code.google.com/p/curlies/source/browse/trunk/test_results here]. Read the [http://code.google.com/p/curlies/source/browse/trunk/test_results/README README file] to see how the result folders are organized. When viewing the results in code.google.com, click "View raw file" to see formatted reports.
 
 == Possible Future Goals ==
   * Extend testing to browsers on smartphones such as Android and iPhone *(In progress)*
   * Add more test cases, such as empty login, etc.
-  * Test Toolbar URL behavior on different browser/platform.
+  * Test Web Search Toolbar URL behavior on different browser/platform.
   * Investigate/test differences in behaviors of two different DOM calls in different browsers depending on the part of the URL, for example:
     alert( document.getElementById('bar').getAttribute('src').indexOf('\n') ); <br />
     alert( document.getElementById('bar').src.indexOf('\n') );
-  * Do mapreduce/log-analysis to collect statistics on how many percent of URLs on the web are affected due to the reason that browsers behave differently for those URLs.
+  * Do mapreduce/log-analysis to collect statistics on the percentage of URLs on the Web that are affected due to browsers behaving differently for those URLs.
+  * HTTP proxy tests
 
 == Detailed Design ==
-In a nutshell, the tool automatically generates testcases which are URLs that contain strings of interest. The testcases are then loaded on each browser/platform, and the tool reports how the strings of interest are handled by the browser/platform by analyzing the corresponding DNS and HTTP packets that were sent out. The tool then automatically generate well-formatted reports with results from the specified browsers/platforms listed side-by-side. Differences among browsers/platforms are highlighted in yellow.
+In a nutshell, the tool automatically generates testcases which are URLs that contain strings of interest. The testcases are then loaded on each browser/platform, and the tool reports how the strings of interest are handled by the browser/platform by analyzing the corresponding DNS and HTTP packets that were sent out. The tool then automatically generates formatted reports with results from the specified browsers/platforms listed side-by-side. Differences among browsers/platforms are highlighted in yellow.
 
-The testing process could be broken into 4 independent steps: 
+The testing process has 4 independent steps: 
   # Test page generation
   # Link invocation
   # Packet sniffing
@@ -39,15 +40,15 @@ To regenerate tests, first cd to trunk/, then run the following commands:
 % g++ -Wall -g source/testcases.cc source/test-page-generator.cc -o test-page-generator
 % ./test-page-generator
 }}}
-The generated test pages are outputted under the directory test_pages/
+The generated test pages are placed under the directory test_pages/
 
-Currently over 1300 test cases are generated. These contain tests for various parts of a URL (host, path, parameter and query) and HTTP Form submission, and for different encodings (ASCII and big5). Tests for other encodings could be easily added.
+Currently over 1300 test cases are generated. These contain tests for various parts of the URL (host, path, parameter and query) and HTTP form submission, for different character encodings (ASCII and Big5). Tests for other encodings could easily be added.
 
-Each test case is a URL that is embedded in a html file as <img src="URL to test">. The benefit of doing this is that all the URLs we want to test will be loaded automatically when the page is loaded, so people don't have to manually click each URL to test it. The only exception is HTML Form test, which we will detail later.
+Each test case is a URL that is embedded in a html file as <img src="URL to test">. The benefit of doing this is that all the URLs we want to test will be loaded automatically when the page is loaded, so people don't have to manually click each URL to test it. The only exception is HTML form testing, which is described below.
 
-Each URL is constructed in a way which makes it easy for us to do packet sniffing later. For that purpose, we embed information of our interest in-between special character sequences, so that our packet sniffer could later easily retrieve this information without parsing the packet in detail. In particular, we use "9qz" to enclose the string we want to test in an URL. In addition, we use "9pz" to enclose the test ID for a test case, so that the test result for a test case could be put into the right place during report generation.
+Each URL is constructed in a way which makes it easy for us to do packet sniffing later. For that purpose, we embed the test case between special character sequences, so that our packet sniffer could later easily retrieve this information without parsing the packet in detail. In particular, we use "9qz" to enclose the string we want to test in an URL. In addition, we use "9pz" to enclose the test ID for a test case, so that the test result for a test case could be put into the right place during report generation.
 
-Test for host, path, parameter and query all follow this scheme. Here are some examples for each of them, for the escaped Ascii test case %00:
+Tests for host, path, parameter and query all follow this scheme. Here are some examples for each of them, for the escaped Ascii test case %00:
 {{{
 <tr><td>0</td><td><img src="http://9pz09pz9qz%009qz.wildcard.invalid./">%00</td></tr>
 <tr><td>256</td><td><img src="http://256.wildcard.invalid./9pz2569pz9qz%009qz">%00</td></tr>
@@ -55,13 +56,13 @@ Test for host, path, parameter and query all follow this scheme. Here are some e
 <tr><td>768</td><td><img src="http://768.wildcard.invalid./search?q=9pz7689pz9qz%009qz">%00</td></tr>
 }}}
 
-HTML Form tests also follow the scheme, but instead of being a URL, each test case is a HTML form whose content contains the string we want to test. The string still follows the "9pz" and "9qz" scheme, with "9pz" enclosing the test ID and "9qz" enclosing the test string. For example, below are 3 test cases:
+HTML form tests also follow the scheme, but instead of being a URL, each test case is a HTML form whose content contains the string we want to test. The string still follows the "9pz" and "9qz" scheme, with "9pz" enclosing the test ID and "9qz" enclosing the test string. For example, below are 3 test cases:
 
 {{{
 <form name='form1309' method='get' action='http://http204.invalid' target='frame1309'>
 <input type='text' name='query' value='9pz13099pz9qz%009qz' /></form>
 <iframe name='frame1309' width='0' height='0' frameborder='0' />
-	<form name='form1310' method='get' action='http://google.com/gen_204' target='frame1310'>
+	<form name='form1310' method='get' action='http://http204.invalid' target='frame1310'>
 <input type='text' name='query' value='9pz13109pz9qz%019qz' /></form>
 <iframe name='frame1310' width='0' height='0' frameborder='0' />
 <form name='form1311' method='get' action='http://http204.invalid' target='frame1311'>
@@ -83,37 +84,37 @@ To make sure all the forms are automatically submitted when the page is loaded, 
 }}}
 
 A few interesting points to note:
-  * For host test, when test string contains non-ASCII characters, we have to modify the test URL slightly by surrounding the test string with "9qz." and ".9pz". An example test URL looks like:
+  * For host tests, when the test string contains non-ASCII characters, we have to modify the test URL slightly by surrounding the test string with "9qz." and ".9pz". An example test URL looks like:
 {{{
 http://9pz10249pz9qz.十.9qz.box.yauz.ch./
 }}}
-  The reason for doing this is that international domain names  in a URL are converted to Punycode by browsers before sending out. As part of the process, the host name is reordered in such a way that our 9qz pairs are no longer surrounding the test results. For example, the  above URL without dot surrounding 十  is encoded as http://xn--9pz10249pz9qz9qz-i970a.box.yauz.ch in punycode. Surrounding it with dot solves the problem, as reordering is contained by dot.
-  * The test-id is appended at the beginning of the host part of the URL for testcases involving path, parameter and query to make each URL have a unique hostname. (Note the testecases involving host have already had unique hostname). The hostname uniqueness is to help prevent [http://en.wikipedia.org/wiki/HTTP_pipelining HTTP Pipelining]. Browsers which has HTTP Pipelining turned on could write multiple HTTP requests to a single socket without waiting for the corresponding response. It happens mostly for idempotent methods, such as the GET operation that we are testing here. As a result, a HTTP packet under HTTP Pipelining doesn't not always contain a complete HTTP request in its data section. In stead, as much as data is squeezed into the data section, and part of the HTTP request that cannot fit into the previous HTTP packet is written to the beginning of the next HTTP packet. 
+  The reason for doing this is that international domain names in a URL are converted to Punycode by browsers before sending out. As part of the process, the host name is reordered in such a way that our 9qz pairs are no longer surrounding the test results. For example, the  above URL without dot surrounding 十 is encoded as http://xn--9pz10249pz9qz9qz-i970a.box.yauz.ch in punycode. Surrounding it with dot solves the problem, as reordering occurs between dots.
+  * The test-id is appended at the beginning of the host part of the URL for testcases involving path, parameter and query to make each URL have a unique hostname. (Note the testecases involving host already have unique hostnames). The hostname uniqueness is to help prevent [http://en.wikipedia.org/wiki/HTTP_pipelining HTTP Pipelining]. Browsers that use HTTP Pipelining write multiple HTTP requests to a single socket without waiting for the corresponding response. It happens mostly for idempotent methods, such as the GET operation that we are testing here. As a result, an HTTP packet under HTTP Pipelining doesn't not always contain a complete HTTP request in its data section. Instead, as much data as possible is squeezed into the data section, and part of the HTTP request that cannot fit into the current HTTP packet is written to the beginning of the next HTTP packet.
 
-    As of July 2009,  Opera enables HTTP Pipelining by default (and there is no easy way to turn it off); Firefox supports it, but set it as off by default; IE and Chrome don't currently support it.
+    As of July 2009,  Opera enables HTTP Pipelining by default (and there is no easy way to turn it off); Firefox supports it, but turns it off by default; IE and Chrome don't currently support it.
 
     Our packet sniffer doesn't work reliably under HTTP pipelining because it assumes a HTTP packet contains one and only one "9pz" pair and "9qz" pair. The hostname uniqueness prevents HTTP pipelining as HTTP packets cannot be pipelined when they are sent to different sockets.
-  * For HTTP FORM test, empty iframes are used with the target attribute of each form pointing to the corresponding iframe. This is necessary to ensure all the forms will be automatically submitted when the page is loaded. Without the target attribute pointing to unique iframe, submitting the first form will reload the page before subsequent forms are able to be submitted. 
+  * For HTTP FORM test, empty iframes are used with the target attribute of each form pointing to the corresponding iframe. This is necessary to ensure all the forms will be automatically submitted when the page is loaded. Without the target attribute pointing to a unique iframe, submitting the first form will reload the page before subsequent forms are able to be submitted. 
   * The trailing dot in the host part of the URL causes the browser to access the external Internet rather than the internal Intranet.
-  * The domain wildcard.invalid and http204.invalid should be replaced with valid domains accordingly for testing. This could be easily done by modifying kWildcardDomain and kNoContentDomain in [http://code.google.com/p/curlies/source/browse/trunk/source/config.h source/config.h].
+  * The domain wildcard.invalid and http204.invalid should be replaced with working domains for testing, with a DNS wildcard and Web server returning HTTP response code 204, respectively. This is done by modifying kWildcardDomain and kNoContentDomain in [http://code.google.com/p/curlies/source/browse/trunk/source/config.h source/config.h].
 
 ===Link Invocation===
-Test pages are generated in the last step as html files containing <img src="..."> where the src link is the URL we want to test, links invocation is automatic when a test page is loaded. For HTTP FORM test, loading the page will trigger the onload event, which will invoke myfunction and submit all the forms.
+Test pages are generated in the last step as html files containing <img src="..."> where the src link is the URL we want to test; link invocation is automatic when a test page is loaded. For HTTP FORM tests, loading the page will trigger the onload event, which will invoke myfunction and submit all the forms.
 
-In this step, [http://www.wireshark.org/ WireShark] is used to capture packets generated by loading test files and save them in .pcap files, which could later be analyzed in details by our packet-sniffer. It is advisable to use a simple filter to minimize the size of the .cap file, for example, ip.src == "<ip of machine under test>" and (dns or http). It is also helpful to load the test page more then once, so lost packets will be minimized.
+In this step, [http://www.wireshark.org/ WireShark] is used to capture packets generated by loading test files and save them in .pcap files, which could later be analyzed by our packet-sniffer. It is advisable to use a simple filter to minimize the size of the .cap file, for example, ip.src == "<ip of machine under test>" and (dns or http). It is also helpful to load the test page more than once, so packet loss will be minimized.
 
-The approach of using [http://www.wireshark.org/ WireShark] to first capture packets into .pcap file then analyze them using libpcap has several advantages:
-  * Easy to work cross-platform
+The approach of using [http://www.wireshark.org/ WireShark] to first capture packets into .pcap file then analyzing them using libpcap has several advantages:
+  * Works cross-platform
     * libpcap doesn't work on Windows (need to use Winpcap). By having Wireshark first capturing packets in .pcap file, we only need to write one version of the packet-sniffer making use of libpcap to analyze .pcap file generated from different platforms.
   * Easy to debug
-    * With captured .cap file stored offline, we could run our packet-sniffer multiple times to reproduce problems in the results. This is not possible during live-capturing.
+    * With captured .pcap file stored offline, we could run our packet-sniffer multiple times to reproduce problems in the results. This is not possible during live-capturing.
 
-Each browser/platform of interest should have a .pcap file storing packets captured for loading all the test pages, and they should be organized into the following structure:
+Each browser/platform of interest should have a .pcap file storing packets captured from the loading all test pages, and they should be organized into the following structure:
 {{{
 <Platform>/<Browser>
 }}}
 Other important points to note during this step:
-    * The machine that is used for testing should be rebooted after each browser is tested because the OS  caches DNS results, so we won't see their packets when we test the  next browser.
+    * The machine that is used for testing should be rebooted after each browser is tested because the OS caches DNS results, so we won't see their packets when we test the  next browser.
     * VPN should be turned off because it totally obscures normal DNS packets.
     * The browser should not be using an HTTP proxy at the time. (Or we could have additional tests to examine proxy behavior later.)
    
@@ -122,15 +123,15 @@ _Alternative approach considered for link invocation:_
 We considered [http://seleniumhq.org/about/how.html Selenium] as a possible candidate to automate the link invocation process. If offers easy ways to programatically launch browsers, and to automatically click links and buttons on pages, and it supports almost all browser/platforms. However, this approach was dropped due to the concern that  Selenium Server acts as a client-configured proxy. The difference is subtle: When an HTTP client sends a request to an HTTP proxy, it sends the entire URL (including the host name) to the proxy, which then processes the request. When an HTTP client processes a URL by itself, it parses the URL to find the host name, sends a DNS packet to look up the IP address of the host, and then makes a TCP connection to the HTTP port (80, by default) at that IP address. Since we want to test both the DNS and HTTP behavior of the browsers, we want to avoid using an HTTP proxy.
 
 ===Packet sniffing===
-In the previous step, interesting packets generated by loading our test files are captured and stored in .pcap files. In this step, we go through each packet to extract results generated by our tests and store them in arrays,  so that well-formatted report could be generated in the next step. This is achieved by our packet-sniffer at [http://code.google.com/p/curlies/source/browse/trunk/source/packet-sniffer.cc source/packet-sniffer.cc].
+In the previous step, packets generated by loading our test files are captured and stored in .pcap files. In this step, we go through each packet to extract results generated by our tests and store them in arrays, so that formatted reports could be generated in the next step. This is achieved by our packet-sniffer at [http://code.google.com/p/curlies/source/browse/trunk/source/packet-sniffer.cc source/packet-sniffer.cc].
 
-We use [http://www.tcpdump.org/ libpcap] to analyze the .pcap file. Libpcap is a mature and well-maintained packet capturing library written in C, and it is the underlying library used by WireShark. We have also considered [http://netresearch.ics.uci.edu/kfujii/jpcap/doc/ Jpcap] and [http://jnetpcap.com/ JNetPcap], both of them Java wrappers on libpcap, but decided not to use them because they are either immature or lack of active development. 
+We use [http://www.tcpdump.org/ libpcap] to analyze the .pcap file. Libpcap is a mature and well-maintained packet capturing library written in C, and it is the underlying library used by WireShark. We have also considered [http://netresearch.ics.uci.edu/kfujii/jpcap/doc/ Jpcap] and [http://jnetpcap.com/ JNetPcap] (both of which are Java wrappers around libpcap), but decided not to use them because they are either immature or are not actively developed. 
 
-For the purpose of this project, we are primarily interested in DNS and HTTP packets containing the testing URL.
+For the purpose of this project, we are primarily interested in DNS and HTTP packets containing the test URL.
 
 *DNS packet*
 
-In terms of pcap filter language, DNS packet could be identified by the filter rule: "udp dst port 53".  If the no DNS packet is found, <not sent> will be reported to indicate "no dns packet was sent". There might be multiple DNS packets matching our criteria. In that case, we choose the first packet that matches our criteria and extract the part of dns.qry.name that is of interest to us.
+In terms of pcap filter language, DNS packet could be identified by the filter rule: "udp dst port 53".  If no DNS packet is found, <not sent> will be reported to indicate "no dns packet was sent". There might be multiple DNS packets matching our criteria. In that case, we choose the first packet that matches our criteria and extract the part of dns.qry.name that is of interest to us.
 
 *HTTP packet*
 
@@ -140,7 +141,7 @@ In terms of pcap filter language, HTTP packet could be identified by the filter 
     * {{{(ip[0]&0xf)<<2}}} - Length of the IP packet header in bytes
     * {{{(tcp[12]&0xf0)>>2}}} - Length of TCP header in bytes
 
-As we can see, the expression says HTTP packet is a TCP package going to destination port 80 and contains non-empty HTTP message.
+This expression says that the HTTP packet is a TCP packet going to destination port 80 and it contains a non-empty HTTP message.
 
 ===Report generation===
 The report generator lives at [http://code.google.com/p/curlies/source/browse/trunk/source/report-generator.cc source/report-generator.cc]. It could be invoked by passing in mutiple .pcap files as parameters. A report will be generated by listing the results from each .pcap file vertically side-by-side.
@@ -152,9 +153,9 @@ g++ -I path/to/boost_1_40_0 -Lpath/to/boost/regex/library/binary -Wall -g source
 ./report-generator output/folder/ path/to/pcap/files/MacOSX10_5_7/FF3_0_11.pcap path/to/pcap/files/MacOSX10_5_7/Safari4_0.pcap path/to/pcap/files/MacOSX10_5_7/Chrome3_0_18.pcap 
 }}}
 
-The example above generates reports which contain test results side by side for FireFox 3.0.11, Safari 4.0 and Chrome 3.0.18 on MacOS X 10.5.7. A report will be generated for each encoding and URL component under test. Reports across other browsers/platforms could be generated similarly. For a set of pre-generated results, see [http://code.google.com/p/curlies/source/browse/#svn/trunk/test_results /test_results]
+The example above generates reports which contain test results side by side for FireFox 3.0.11, Safari 4.0 and Chrome 3.0.18 on MacOS X 10.5.7. A report will be generated for each character encoding and for each URL component. Reports across other browsers/platforms are generated in a similar manner. For a set of pre-generated results, see [http://code.google.com/p/curlies/source/browse/#svn/trunk/test_results /test_results]
 
-Note the library makes use of the regular expression library from Boost C++ library, so the correct installation path of Boost and the regex library needs to be provided to compile and link the code correctly. For more information on how to install and build program with Boost for your platform, see the [http://www.boost.org/doc/libs/1_41_0/more/getting_started/index.html Boost Getting Started Guide]. 
+Note the library makes use of the regular expression library from Boost C++ library, so the correct installation path of Boost and the regex library needs to be provided to compile and link the code correctly. For more information on how to install and build programs with Boost for your platform, see the [http://www.boost.org/doc/libs/1_41_0/more/getting_started/index.html Boost Getting Started Guide]. 
 
 ==Related Projects==
   * [http://code.google.com/p/browsersec/wiki/Part1#Uniform_Resource_Locators Browser Security Handbook]
