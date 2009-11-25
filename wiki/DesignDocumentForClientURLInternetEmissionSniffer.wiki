@@ -42,3 +42,42 @@ To regenerate tests, first cd to trunk/, then run the following commands:
 The generated test pages are outputted under the directory test_pages/
 
 Currently over 1300 test cases are generated. These contain tests for various parts of a URL (host, path, parameter and query) and HTTP Form submission, and for different encodings (ASCII and big5). Tests for other encodings could be easily added.
+
+Each test case is a URL that is embedded in a html file as <img src="URL to test">. The benefit of doing this is that all the URLs we want to test will be loaded automatically when the page is loaded, so people don't have to manually click each URL to test it. The only exception is HTML Form test, which we will detail later.
+
+Each URL is constructed in a way which makes it easy for us to do packet sniffing later. For that purpose, we embed information of our interest in-between special character sequences, so that our packet sniffer could later easily retrieve this information without parsing the packet in detail. In particular, we use "9qz" to enclose the string we want to test in an URL. In addition, we use "9pz" to enclose the test ID for a test case, so that the test result for a test case could be put into the right place during report generation.
+
+Test for host, path, parameter and query all follow this scheme. Here are some examples for each of them, for the escaped Ascii test case %00:
+{{{
+<tr><td>0</td><td><img src="http://9pz09pz9qz%009qz.wildcard.invalid./">%00</td></tr>
+<tr><td>256</td><td><img src="http://256.wildcard.invalid./9pz2569pz9qz%009qz">%00</td></tr>
+<tr><td>512</td><td><img src="http://512.wildcard.invalid./search;q=9pz5129pz9qz%009qz">%00</td></tr>
+<tr><td>768</td><td><img src="http://768.wildcard.invalid./search?q=9pz7689pz9qz%009qz">%00</td></tr>
+}}}
+
+HTML Form tests also follow the scheme, but instead of being a URL, each test case is a HTML form whose content contains the string we want to test. The string still follows the "9pz" and "9qz" scheme, with "9pz" enclosing the test ID and "9qz" enclosing the test string. For example, below are 3 test cases:
+
+{{{
+<form name='form1309' method='get' action='http://http204.invalid' target='frame1309'>
+<input type='text' name='query' value='9pz13099pz9qz%009qz' /></form>
+<iframe name='frame1309' width='0' height='0' frameborder='0' />
+	<form name='form1310' method='get' action='http://google.com/gen_204' target='frame1310'>
+<input type='text' name='query' value='9pz13109pz9qz%019qz' /></form>
+<iframe name='frame1310' width='0' height='0' frameborder='0' />
+<form name='form1311' method='get' action='http://http204.invalid' target='frame1311'>
+<input type='text' name='query' value='9pz13119pz9qz%029qz' /></form>
+<iframe name='frame1311' width='0' height='0' frameborder='0' />
+}}}
+
+To make sure all the forms are automatically submitted when the page is loaded, we add the following script to the HTML file:
+
+{{{
+<script type='text/javascript'>
+  function myfunction() {
+    document.form1309.submit();
+    document.form1310.submit();
+    document.form1311.submit();
+  }
+  window.onload = myfunction;
+</script>
+}}}
