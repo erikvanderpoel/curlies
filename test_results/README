@@ -13,16 +13,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This directory contains the test results from running tests at ../test_pages/
-on various browsers/platforms. It is organized into the follow directories:
+on various browsers and operating systems. It is organized into the follow
+directories:
+  * test_results/browsers/<browser>/latest
+      contains test results from the latest stable version of the specified
+      browser on all operating systems where it is available
+  * test_results/latest
+      contains test results from the latest version of each browser on the
+      latest version of each operating system
   * test_results/operating_systems/<OS>
       contains test results from latest stable version of each browser on
-      the Operating System specified
-  * test_results/operating_systems/<OS>/<Browser>
-      contains test results from different versions of the specified Browser
-      on the Operating System specified
-  * test_results/browsers/<Browser>/latest
-      contains test results from the latest stable version of the specified
-      Browser on all Operating Systems where it is available
+      the operating system specified
+  * test_results/operating_systems/<OS>/<browser>
+      contains test results from different versions of the specified browser
+      on the operating system specified
 
 Test results here could be:
   * "not sent"
