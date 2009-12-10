@@ -29,6 +29,7 @@ enum TestType {
   kParameter,
   kQuery,
   kFormGet,
+  kRelative,
 };
 
 enum Encoding {
