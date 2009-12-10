@@ -34,10 +34,10 @@ using namespace std;
 
 static void WriteResultTableHeading(
     FILE *output_file,
-    const bool isAscii,
+    const bool needCharColumn,
     const vector<string>& platform_browser_under_test) {
   fprintf(output_file, "<tr><th>ID</th><th>Test</th>");
-  if (isAscii) {
+  if (needCharColumn) {
     fprintf(output_file, "<th>Char</th>");
   }
   for (vector<string>::const_iterator it = platform_browser_under_test.begin();
@@ -49,7 +49,7 @@ static void WriteResultTableHeading(
 
 static void WriteFileHeader(FILE* output_file,
                             const vector<string>& platform_browser_under_test,
-                            const bool isAscii,
+                            const bool needCharColumn,
                             string title) {
   fprintf(output_file,
       "<!-- Copyright 2009 Google Inc.\n\n"
@@ -98,10 +98,13 @@ static void WriteFileFooter(FILE* output_file) {
 
 static void AppendResultToReport(
     const TestCase& test_case,
-    const bool isAscii,
+    const bool needCharColumn,
     const vector<vector<string> >& results,
     FILE* output_file) {
   const char* display_string = test_case.test_string_for_display;
+  if (test_case.test_component == kRelative) {
+    display_string = test_case.test_string;
+  }
   // Display results of test if it has not been removed
   if (strlen(display_string) > 0) {
     ostringstream oss;
@@ -110,7 +113,7 @@ static void AppendResultToReport(
     string row_result = oss.str();
     const char* test_string = test_case.test_string;
     char buffer[100];
-    if (isAscii) {
+    if (needCharColumn) {
       int b = *test_string;
       if (isprint(b) && b != ' ') {
         snprintf(buffer, 100, "<td>%c</td>", b);
@@ -132,7 +135,7 @@ static void AppendResultToReport(
       }
       if (result_string.size() == 1 &&
           (!isprint(result_string[0]) || result_string[0] == ' ')) {
-        if (isAscii && *test_string == '.' && result_string[0] == '\x03') {
+        if (needCharColumn && *test_string == '.' && result_string[0] == '\x03') {
           snprintf(buffer, 100, "<td>%s</td>", "dot");
           row_result.append(buffer);
         } else {
@@ -193,6 +196,7 @@ int main(int argc, char* argv[]) {
   FILE* parameter_ascii_results = OpenFile(output_path, "parameter_ascii_results.html");
   FILE* query_ascii_results = OpenFile(output_path, "query_ascii_results.html");
   FILE* form_get_ascii_results = OpenFile(output_path, "form_get_ascii_results.html");
+  FILE* relative_results = OpenFile(output_path, "relative_results.html");
   FILE* host_big5_dns_results = OpenFile(output_path, "host_big5_dns_results.html");
   FILE* host_big5_http_results = OpenFile(output_path, "host_big5_http_results.html");
   FILE* path_big5_results = OpenFile(output_path, "path_big5_results.html");
@@ -206,6 +210,7 @@ int main(int argc, char* argv[]) {
   WriteFileHeader(parameter_ascii_results, platform_browser_under_test, true, "Parameter (HTTP) Test Results");
   WriteFileHeader(query_ascii_results, platform_browser_under_test, true, "Query (HTTP) Test Results");
   WriteFileHeader(form_get_ascii_results, platform_browser_under_test, true, "HTTP Form (GET) Test Results");
+  WriteFileHeader(relative_results, platform_browser_under_test, true, "Relative Test Results");
   WriteFileHeader(host_big5_dns_results, platform_browser_under_test, false, "Host (DNS) Test Results");
   WriteFileHeader(host_big5_http_results, platform_browser_under_test, false, "Host (HTTP) Test Results");
   WriteFileHeader(path_big5_results, platform_browser_under_test, false, "Path (HTTP) Test Results");
@@ -215,12 +220,12 @@ int main(int argc, char* argv[]) {
 
   // The first dimension of this array denotes Encoding, the second dimension
   // denotes TestType
-  FILE* http_file_matrix[][5] = {{host_ascii_http_results, path_ascii_results,
+  FILE* http_file_matrix[][6] = {{host_ascii_http_results, path_ascii_results,
                                   parameter_ascii_results, query_ascii_results,
-                                  form_get_ascii_results},
+                                  form_get_ascii_results, relative_results},
                                 {host_big5_http_results, path_big5_results,
                                  parameter_big5_results, query_big5_results,
-                                 form_get_big5_results}};
+                                 form_get_big5_results, NULL}};
   // Dimension of this array denotes Encoding
   FILE* dns_file_matrix[] = {host_ascii_dns_results, host_big5_dns_results};
   int number_of_ranges = sizeof(kEntrySequenceInReport)/sizeof(kEntrySequenceInReport[0]);
@@ -232,22 +237,24 @@ int main(int argc, char* argv[]) {
       // Generate Http reports
       output_file =
           http_file_matrix[test_case.test_encoding][test_case.test_component];
+      bool needCharColumn = test_case.test_encoding == kAscii &&
+          test_case.test_component != kRelative;
       int offset = j - kEntrySequenceInReport[i][0];
       if (offset % 16 == 0) {
-        WriteResultTableHeading(output_file, test_case.test_encoding == kAscii, platform_browser_under_test);
+        WriteResultTableHeading(output_file, needCharColumn, platform_browser_under_test);
       }
       AppendResultToReport(test_case,
-                           test_case.test_encoding == kAscii,
+                           needCharColumn,
                            test_results_http, output_file);
 
       // Generate DNS report
       if (test_case.test_component == kHost) {
         output_file = dns_file_matrix[test_case.test_encoding];
         if (offset % 16 == 0) {
-      	  WriteResultTableHeading(output_file, test_case.test_encoding == kAscii, platform_browser_under_test);
+      	  WriteResultTableHeading(output_file, needCharColumn, platform_browser_under_test);
         }
         AppendResultToReport(test_case,
-                             test_case.test_encoding == kAscii,
+                             needCharColumn,
                              test_results_dns, output_file);
       }
     }
@@ -259,6 +266,7 @@ int main(int argc, char* argv[]) {
   WriteFileFooter(parameter_ascii_results);
   WriteFileFooter(query_ascii_results);
   WriteFileFooter(form_get_ascii_results);
+  WriteFileFooter(relative_results);
   WriteFileFooter(host_big5_dns_results);
   WriteFileFooter(host_big5_http_results);
   WriteFileFooter(path_big5_results);

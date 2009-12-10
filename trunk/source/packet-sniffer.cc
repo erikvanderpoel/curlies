@@ -136,6 +136,25 @@ void ExtractResultsFromCapFile(const char* filename,
           *(results_begin + index) = "terminator";
         }
       }
+    } else {
+      temp = memstr((const char*) packet, pkt_length_remaining, "9rz");
+      if (temp) {
+        int index = atoi(temp + 4);
+        if (packet_type.compare("dns") == 0) {
+          *(results_begin + index) = "xxx";
+        } else {
+          const char* get = memstr((const char*) packet, pkt_length_remaining,
+                                    "GET ");
+          if (get) {
+            const char* http = memstr((const char*) packet,
+                                      pkt_length_remaining, " HTTP/");
+            if (http) {
+              string request(get + 4, http - (get + 4));
+              *(results_begin + index) = request;
+            }
+          }
+        }
+      }
     }
     packet = pcap_next(handle, &pkthdr);
   }

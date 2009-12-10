@@ -1343,6 +1343,56 @@ TestCase entries[] = {
   {1309, kFormGet, kBig5, "\\xA2\\xCC", "\xA2\xCC", 0},
   {1310, kFormGet, kBig5, "\\xA4Q", "\xA4Q", 0},
   {1311, kFormGet, kBig5, "&amp;#x5341;&amp;#x431;", "&#x5341;&#x431;", 0},
+
+  // RFC 3986
+
+  // 5.4.1. Normal Examples
+
+  {1312, kRelative,kAscii, "", "http://%s", 0},
+  {1313, kRelative,kAscii, "", "g", 0},
+  {1314, kRelative,kAscii, "", "./g", 0},
+  {1315, kRelative,kAscii, "", "g/", 0},
+  {1316, kRelative,kAscii, "", "/g", 0},
+  {1317, kRelative,kAscii, "", "//%s", 0},
+  {1318, kRelative,kAscii, "", "?y", 0},
+  {1319, kRelative,kAscii, "", "g?y", 0},
+  {1320, kRelative,kAscii, "", "#s", 0},
+  {1321, kRelative,kAscii, "", "g#s", 0},
+  {1322, kRelative,kAscii, "", "g?y#s", 0},
+  {1323, kRelative,kAscii, "", ";x", 0},
+  {1324, kRelative,kAscii, "", "g;x", 0},
+  {1325, kRelative,kAscii, "", "g;x?y#s", 0},
+  {1326, kRelative,kAscii, "", "", 0},
+  {1327, kRelative,kAscii, "", ".", 0},
+  {1328, kRelative,kAscii, "", "./", 0},
+  {1329, kRelative,kAscii, "", "..", 0},
+  {1330, kRelative,kAscii, "", "../", 0},
+  {1331, kRelative,kAscii, "", "../g", 0},
+  {1332, kRelative,kAscii, "", "../..", 0},
+  {1333, kRelative,kAscii, "", "../../", 0},
+  {1334, kRelative,kAscii, "", "../../g", 0},
+
+  // 5.4.2. Abnormal Examples
+
+  {1335, kRelative,kAscii, "", "../../../g", 0},
+  {1336, kRelative,kAscii, "", "../../../../g", 0},
+  {1337, kRelative,kAscii, "", "/./g", 0},
+  {1338, kRelative,kAscii, "", "/../g", 0},
+  {1339, kRelative,kAscii, "", "g.", 0},
+  {1340, kRelative,kAscii, "", ".g", 0},
+  {1341, kRelative,kAscii, "", "g..", 0},
+  {1342, kRelative,kAscii, "", "..g", 0},
+  {1343, kRelative,kAscii, "", "./../g", 0},
+  {1344, kRelative,kAscii, "", "./g/.", 0},
+  {1345, kRelative,kAscii, "", "g/./h", 0},
+  {1346, kRelative,kAscii, "", "g/../h", 0},
+  {1347, kRelative,kAscii, "", "g;x=1/./y", 0},
+  {1348, kRelative,kAscii, "", "g;x=1/../y", 0},
+  {1349, kRelative,kAscii, "", "g?y/./x", 0},
+  {1350, kRelative,kAscii, "", "g?y/../x", 0},
+  {1351, kRelative,kAscii, "", "g#s/./x", 0},
+  {1352, kRelative,kAscii, "", "g#s/../x", 0},
+  {1353, kRelative,kAscii, "", "http:g", 0},
 };
 
 int entries_size() {

@@ -32,7 +32,8 @@
 
 using namespace std;
 
-static void WriteFileHeader(FILE* output_file, const char* charset) {
+static void WriteFileHeaderWithBase(FILE* output_file, const char* charset,
+                                    const char* base) {
   fprintf(output_file,
       "<!-- Copyright 2009 Google Inc.\n\n"
       "Licensed under the Apache License, Version 2.0 (the \"License\");\n"
@@ -53,12 +54,14 @@ static void WriteFileHeader(FILE* output_file, const char* charset) {
       "<html>\n"
       "<head>\n"
       "<meta http-equiv=\"Content-Type\" "
-      "content=\"text/html; charset=%s\">\n"
-      "</head>\n"
-      "<body>\n", charset
-      );
+      "content=\"text/html; charset=%s\">\n", charset);
+  fprintf(output_file, "%s</head>\n<body>\n", base);
   fprintf(output_file, "<table border=\"1\">\n");
   fprintf(output_file, "<tr><td>Test ID</td><td>Test</td></tr>\n");
+}
+
+static void WriteFileHeader(FILE* output_file, const char* charset) {
+  WriteFileHeaderWithBase(output_file, charset, "");
 }
 
 static void WriteFileFooter(FILE* output_file) {
@@ -141,30 +144,65 @@ static void GenerateFormTestCase(FILE* output_file, int id,
           "</iframe>\n", frame_name);
 }
 
+static FILE* OpenFile(FILE* main_file, const char* file) {
+  const char* name = strchr(file, '/') + 1;
+  fprintf(main_file, "<iframe src='%s'></iframe>\n", name);
+  return fopen(file, "w");
+}
+
+static void GenerateRelativeTestCase(FILE* main_file,
+                                     const TestCase& test_case) {
+  char buf[128];
+  snprintf(buf, sizeof(buf), "test_pages/relative%d.html", test_case.test_id);
+  FILE* file = OpenFile(main_file, buf);
+  snprintf(buf, sizeof(buf), "<base href='http://b9rz.%d.%s./b/c/d;p?q'>\n",
+           test_case.test_id, kWildcardDomain.c_str());
+  WriteFileHeaderWithBase(file, "US-ASCII", buf);
+  string test_string;
+  if (strchr(test_case.test_string, '%') != NULL) {
+    snprintf(buf, sizeof(buf), "r9rz.%d.%s.", test_case.test_id,
+             kWildcardDomain.c_str());
+    string host = buf;
+    snprintf(buf, sizeof(buf), test_case.test_string, host.c_str());
+    test_string = buf;
+  } else {
+    test_string = test_case.test_string;
+  }
+  fprintf(file,
+          "<tr><td>%d</td><td>"
+          "<img src='%s'>"
+          "</td></tr>\n",
+          test_case.test_id, test_string.c_str());
+  WriteFileFooter(file);
+  fclose(file);
+}
+
 int main(int argc, const char* argv[]) {
+  FILE* main_file = fopen("test_pages/main.html", "w");
+
   vector<FILE*> form(kEncodingSize);
   FILE* host_ascii_escaped =
-      fopen("test_pages/host-ascii-escaped.html", "w");
+      OpenFile(main_file, "test_pages/host-ascii-escaped.html");
   FILE* host_ascii_unescaped =
-      fopen("test_pages/host-ascii-unescaped.html", "w");
+      OpenFile(main_file, "test_pages/host-ascii-unescaped.html");
   FILE* path_ascii_escaped =
-      fopen("test_pages/path-ascii-escape.html", "w");
+      OpenFile(main_file, "test_pages/path-ascii-escape.html");
   FILE* path_ascii_unescaped =
-      fopen("test_pages/path-ascii-unescape.html", "w");
+      OpenFile(main_file, "test_pages/path-ascii-unescape.html");
   FILE* parameter_ascii_escaped =
-      fopen("test_pages/parameter-ascii-escaped.html", "w");
+      OpenFile(main_file, "test_pages/parameter-ascii-escaped.html");
   FILE* parameter_ascii_unescaped =
-      fopen("test_pages/parameter-ascii-unescaped.html", "w");
+      OpenFile(main_file, "test_pages/parameter-ascii-unescaped.html");
   FILE* query_ascii_escaped =
-      fopen("test_pages/query-ascii-escaped.html", "w");
+      OpenFile(main_file, "test_pages/query-ascii-escaped.html");
   FILE* query_ascii_unescaped =
-      fopen("test_pages/query-ascii-unescaped.html", "w");
+      OpenFile(main_file, "test_pages/query-ascii-unescaped.html");
   form[kAscii] =
-      fopen("test_pages/form-ascii.html", "w");
+      OpenFile(main_file, "test_pages/form-ascii.html");
   FILE* all_big5 =
-      fopen("test_pages/all-big5.html", "w");
+      OpenFile(main_file, "test_pages/all-big5.html");
   form[kBig5] =
-      fopen("test_pages/form-big5.html", "w");
+      OpenFile(main_file, "test_pages/form-big5.html");
 
   WriteFileHeader(host_ascii_escaped, "US-ASCII");
   WriteFileHeader(host_ascii_unescaped, "US-ASCII");
@@ -261,6 +299,9 @@ int main(int argc, const char* argv[]) {
                              test_case.should_escape,
                              &form_script[encoding]);
         break;
+      case kRelative:
+        GenerateRelativeTestCase(main_file, test_case);
+        break;
     }
   }
 
@@ -294,6 +335,8 @@ int main(int argc, const char* argv[]) {
   fclose(form[kAscii]);
   fclose(all_big5);
   fclose(form[kBig5]);
+
+  fclose(main_file);
 
   return 0;
 }
