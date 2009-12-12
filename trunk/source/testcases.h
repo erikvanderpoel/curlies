@@ -30,6 +30,7 @@ enum TestType {
   kQuery,
   kFormGet,
   kRelative,
+  kMisc,
 };
 
 enum Encoding {
