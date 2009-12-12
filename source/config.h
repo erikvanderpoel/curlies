@@ -47,6 +47,7 @@ const int kEntrySequenceInReport[][2] = {
     {1053, 1180},
     {1309, 1311},
     {1312, 1353},
+    {1354, 1356},
 };
 
 #endif /* CONFIG_H_ */

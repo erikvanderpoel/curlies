@@ -1344,6 +1344,7 @@ TestCase entries[] = {
   {1310, kFormGet, kBig5, "\\xA4Q", "\xA4Q", 0},
   {1311, kFormGet, kBig5, "&amp;#x5341;&amp;#x431;", "&#x5341;&#x431;", 0},
 
+
   // RFC 3986
 
   // 5.4.1. Normal Examples
@@ -1393,6 +1394,15 @@ TestCase entries[] = {
   {1351, kRelative,kAscii, "", "g#s/./x", 0},
   {1352, kRelative,kAscii, "", "g#s/../x", 0},
   {1353, kRelative,kAscii, "", "http:g", 0},
+
+  // End of RFC 3986 tests
+
+
+  // Backslash tests
+
+  {1354, kMisc,    kAscii, "", "http:\\\\%s", 0},
+  {1355, kMisc,    kAscii, "", "http:\\/%s", 0},
+  {1356, kMisc,    kAscii, "", "http:/\\%s", 0},
 };
 
 int entries_size() {

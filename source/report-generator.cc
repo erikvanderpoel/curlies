@@ -101,9 +101,15 @@ static void AppendResultToReport(
     const bool needCharColumn,
     const vector<vector<string> >& results,
     FILE* output_file) {
-  const char* display_string = test_case.test_string_for_display;
-  if (test_case.test_component == kRelative) {
-    display_string = test_case.test_string;
+  const char* display_string;
+  switch (test_case.test_component) {
+    case kMisc:
+    case kRelative:
+      display_string = test_case.test_string;
+      break;
+    default:
+      display_string = test_case.test_string_for_display;
+      break;
   }
   // Display results of test if it has not been removed
   if (strlen(display_string) > 0) {
@@ -197,6 +203,7 @@ int main(int argc, char* argv[]) {
   FILE* query_ascii_results = OpenFile(output_path, "query_ascii_results.html");
   FILE* form_get_ascii_results = OpenFile(output_path, "form_get_ascii_results.html");
   FILE* relative_results = OpenFile(output_path, "relative_results.html");
+  FILE* misc_results = OpenFile(output_path, "misc_results.html");
   FILE* host_big5_dns_results = OpenFile(output_path, "host_big5_dns_results.html");
   FILE* host_big5_http_results = OpenFile(output_path, "host_big5_http_results.html");
   FILE* path_big5_results = OpenFile(output_path, "path_big5_results.html");
@@ -211,6 +218,7 @@ int main(int argc, char* argv[]) {
   WriteFileHeader(query_ascii_results, platform_browser_under_test, true, "Query (HTTP) Test Results");
   WriteFileHeader(form_get_ascii_results, platform_browser_under_test, true, "HTTP Form (GET) Test Results");
   WriteFileHeader(relative_results, platform_browser_under_test, true, "Relative Test Results");
+  WriteFileHeader(misc_results, platform_browser_under_test, true, "Miscellaneous Test Results");
   WriteFileHeader(host_big5_dns_results, platform_browser_under_test, false, "Host (DNS) Test Results");
   WriteFileHeader(host_big5_http_results, platform_browser_under_test, false, "Host (HTTP) Test Results");
   WriteFileHeader(path_big5_results, platform_browser_under_test, false, "Path (HTTP) Test Results");
@@ -220,12 +228,13 @@ int main(int argc, char* argv[]) {
 
   // The first dimension of this array denotes Encoding, the second dimension
   // denotes TestType
-  FILE* http_file_matrix[][6] = {{host_ascii_http_results, path_ascii_results,
+  FILE* http_file_matrix[][7] = {{host_ascii_http_results, path_ascii_results,
                                   parameter_ascii_results, query_ascii_results,
-                                  form_get_ascii_results, relative_results},
+                                  form_get_ascii_results, relative_results,
+                                  misc_results},
                                 {host_big5_http_results, path_big5_results,
                                  parameter_big5_results, query_big5_results,
-                                 form_get_big5_results, NULL}};
+                                 form_get_big5_results, NULL, NULL}};
   // Dimension of this array denotes Encoding
   FILE* dns_file_matrix[] = {host_ascii_dns_results, host_big5_dns_results};
   int number_of_ranges = sizeof(kEntrySequenceInReport)/sizeof(kEntrySequenceInReport[0]);
@@ -238,7 +247,8 @@ int main(int argc, char* argv[]) {
       output_file =
           http_file_matrix[test_case.test_encoding][test_case.test_component];
       bool needCharColumn = test_case.test_encoding == kAscii &&
-          test_case.test_component != kRelative;
+          test_case.test_component != kRelative &&
+          test_case.test_component != kMisc;
       int offset = j - kEntrySequenceInReport[i][0];
       if (offset % 16 == 0) {
         WriteResultTableHeading(output_file, needCharColumn, platform_browser_under_test);
@@ -267,6 +277,7 @@ int main(int argc, char* argv[]) {
   WriteFileFooter(query_ascii_results);
   WriteFileFooter(form_get_ascii_results);
   WriteFileFooter(relative_results);
+  WriteFileFooter(misc_results);
   WriteFileFooter(host_big5_dns_results);
   WriteFileFooter(host_big5_http_results);
   WriteFileFooter(path_big5_results);
