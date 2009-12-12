@@ -105,7 +105,13 @@ static void AppendResultToReport(
   switch (test_case.test_component) {
     case kMisc:
     case kRelative:
-      display_string = test_case.test_string;
+      char buf[128];
+      if (strchr(test_case.test_string, '%') != NULL) {
+        snprintf(buf, sizeof(buf), test_case.test_string, "r");
+        display_string = buf;
+      } else {
+        display_string = test_case.test_string;
+      }
       break;
     default:
       display_string = test_case.test_string_for_display;
@@ -132,9 +138,16 @@ static void AppendResultToReport(
     bool same_across_cells = true; // True if each cell in this row
                                    // contains the same data
     string last_string_result;
+    char host_suffix[128];
+    snprintf(host_suffix, sizeof(host_suffix), "9rz.%d.%s.", test_case.test_id,
+             kWildcardDomain.c_str());
     for (vector<vector<string> >::const_iterator it = results.begin();
          it != results.end(); it++) {
       string result_string = (*it)[test_case.test_id];
+      int suffix = result_string.find(host_suffix);
+      if (suffix >= 0) {
+        result_string.erase(suffix);
+      }
       if (same_across_cells && !last_string_result.empty() &&
           result_string.compare(last_string_result) != 0) {
         same_across_cells = false;
