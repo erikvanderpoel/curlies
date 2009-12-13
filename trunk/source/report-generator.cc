@@ -50,7 +50,8 @@ static void WriteResultTableHeading(
 static void WriteFileHeader(FILE* output_file,
                             const vector<string>& platform_browser_under_test,
                             const bool needCharColumn,
-                            string title) {
+                            const char* title,
+                            const char* description) {
   fprintf(output_file,
       "<!-- Copyright 2009 Google Inc.\n\n"
       "Licensed under the Apache License, Version 2.0 (the \"License\");\n"
@@ -72,19 +73,23 @@ static void WriteFileHeader(FILE* output_file,
       "<head>\n"
       "<meta http-equiv=\"Content-Type\"content=\"text/html; charset=US-ASCII\">\n"
       "</head>\n"
-      "<body>\n"
-      "<h1>");
-  fprintf(output_file, title.c_str());
+      "<body>\n");
+  fprintf(output_file, "<h2>%s</h2>\n", title);
+  fprintf(output_file, "%s\n", description);
   fprintf(output_file,
-          "</h1>\n"
-          "<h4>Legend</h4>\n"
-          "<table>\n"
-          "<tr><td>\\xXX<td>= a single byte with that hex encoding\n"
-          "<tr><td>%%XX<td>= three bytes (%%, X and X)\n"
-          "<tr><td>not sent<td>= no DNS/HTTP packet was sent\n"
-          "<tr><td>deleted<td>= byte was deleted before packet was sent\n"
-          "<tr><td>terminator<td>= this character was treated as a delimiter\n"
-          "<tr><td>dot<td>= this was treated like the dot in domain names\n"
+          "<table border=1>\n"
+          "<tr><td align=right>\\xXX"
+          "<td>a single byte with that hex encoding\n"
+          "<td align=right>%%XX"
+          "<td>three bytes (%%, X and X)\n"
+          "<tr><td align=right>not sent"
+          "<td>no DNS/HTTP packet was sent\n"
+          "<td align=right>deleted"
+          "<td>byte was deleted before packet was sent\n"
+          "<tr><td align=right>terminator"
+          "<td>this character was treated as a delimiter\n"
+          "<td align=right>dot"
+          "<td>this was treated like the dot in domain names\n"
           "</table><br>\n");
   fprintf(output_file, "<table border=\"1\">\n");
 }
@@ -224,20 +229,38 @@ int main(int argc, char* argv[]) {
   FILE* query_big5_results = OpenFile(output_path, "query_big5_results.html");
   FILE* form_get_big5_results = OpenFile(output_path, "form_get_big5_results.html");
 
-  WriteFileHeader(host_ascii_dns_results, platform_browser_under_test, true, "Host (DNS) Test Results");
-  WriteFileHeader(host_ascii_http_results, platform_browser_under_test, true, "Host (HTTP) Test Results");
-  WriteFileHeader(path_ascii_results, platform_browser_under_test, true, "Path (HTTP) Test Results");
-  WriteFileHeader(parameter_ascii_results, platform_browser_under_test, true, "Parameter (HTTP) Test Results");
-  WriteFileHeader(query_ascii_results, platform_browser_under_test, true, "Query (HTTP) Test Results");
-  WriteFileHeader(form_get_ascii_results, platform_browser_under_test, true, "HTTP Form (GET) Test Results");
-  WriteFileHeader(relative_results, platform_browser_under_test, true, "Relative Test Results");
-  WriteFileHeader(misc_results, platform_browser_under_test, true, "Miscellaneous Test Results");
-  WriteFileHeader(host_big5_dns_results, platform_browser_under_test, false, "Host (DNS) Test Results");
-  WriteFileHeader(host_big5_http_results, platform_browser_under_test, false, "Host (HTTP) Test Results");
-  WriteFileHeader(path_big5_results, platform_browser_under_test, false, "Path (HTTP) Test Results");
-  WriteFileHeader(parameter_big5_results, platform_browser_under_test, false, "Parameter (HTTP) Test Results");
-  WriteFileHeader(query_big5_results, platform_browser_under_test, false, "Query (HTTP) Test Results");
-  WriteFileHeader(form_get_big5_results, platform_browser_under_test, false, "HTTP Form (GET) Test Results");
+  WriteFileHeader(host_ascii_dns_results, platform_browser_under_test, true,
+                  "Host (DNS) Test Results", "");
+  WriteFileHeader(host_ascii_http_results, platform_browser_under_test, true,
+                  "Host (HTTP) Test Results", "");
+  WriteFileHeader(path_ascii_results, platform_browser_under_test, true,
+                  "Path (HTTP) Test Results", "");
+  WriteFileHeader(parameter_ascii_results, platform_browser_under_test, true,
+                  "Parameter (HTTP) Test Results", "");
+  WriteFileHeader(query_ascii_results, platform_browser_under_test, true,
+                  "Query (HTTP) Test Results", "");
+  WriteFileHeader(form_get_ascii_results, platform_browser_under_test, true,
+                  "HTTP Form (GET) Test Results", "");
+  WriteFileHeader(relative_results, platform_browser_under_test, true,
+                  "Relative Test Results",
+                  "<p>Relative URL test cases from "
+                  "<a href='http://tools.ietf.org/html/rfc3986#section-5.4'>"
+                  "RFC 3986 section 5.4</a> where the base URL is "
+                  "<code>http://b/b/c/d;p?q</code></p>\n");
+  WriteFileHeader(misc_results, platform_browser_under_test, true,
+                  "Miscellaneous Test Results", "");
+  WriteFileHeader(host_big5_dns_results, platform_browser_under_test, false,
+                  "Host (DNS) Test Results", "");
+  WriteFileHeader(host_big5_http_results, platform_browser_under_test, false,
+                  "Host (HTTP) Test Results", "");
+  WriteFileHeader(path_big5_results, platform_browser_under_test, false,
+                  "Path (HTTP) Test Results", "");
+  WriteFileHeader(parameter_big5_results, platform_browser_under_test, false,
+                  "Parameter (HTTP) Test Results", "");
+  WriteFileHeader(query_big5_results, platform_browser_under_test, false,
+                  "Query (HTTP) Test Results", "");
+  WriteFileHeader(form_get_big5_results, platform_browser_under_test, false,
+                  "HTTP Form (GET) Test Results", "");
 
   // The first dimension of this array denotes Encoding, the second dimension
   // denotes TestType
