@@ -25,15 +25,16 @@ tests, please add it in the ../source/testcases.cc, or contact the authors.
 <meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
 </head>
 <body>
-<h1>Relative Test Results</h1>
-<h4>Legend</h4>
-<table>
-<tr><td>\xXX<td>= a single byte with that hex encoding
-<tr><td>%XX<td>= three bytes (%, X and X)
-<tr><td>not sent<td>= no DNS/HTTP packet was sent
-<tr><td>deleted<td>= byte was deleted before packet was sent
-<tr><td>terminator<td>= this character was treated as a delimiter
-<tr><td>dot<td>= this was treated like the dot in domain names
+<h2>Relative Test Results</h2>
+<p>Relative URL test cases from <a href='http://tools.ietf.org/html/rfc3986#section-5.4'>RFC 3986 section 5.4</a> where the base URL is <code>http://b/b/c/d;p?q</code></p>
+
+<table border=1>
+<tr><td align=right>\xXX<td>a single byte with that hex encoding
+<td align=right>%XX<td>three bytes (%, X and X)
+<tr><td align=right>not sent<td>no DNS/HTTP packet was sent
+<td align=right>deleted<td>byte was deleted before packet was sent
+<tr><td align=right>terminator<td>this character was treated as a delimiter
+<td align=right>dot<td>this was treated like the dot in domain names
 </table><br>
 <table border="1">
 <tr><th>ID</th><th>Test</th><th>WinXP.SP3/IE8.0.6001.18702.0</th><th>WinXP.SP3/FF3.5.5</th><th>WinXP.SP3/Safari4.0.4.531.21.10</th><th>WinXP.SP3/Chrome3.0.195.33</th><th>WinXP.SP3/Opera10.10.1893</th></tr>
