@@ -10,10 +10,10 @@ There are many URL parsing, escaping and encoding details, and the browsers and 
 
 == Current Situation ==
 
-Tests are being carried out across all major modern browsers (IE 6, 7, 8; Firefox 2, 3.0, 3.5;  Safari 3, 4; Chrome 2, 3; Opera 9, 10) on all the major platforms (Windows XP, Windows Vista, Mac and Linux). Over [http://code.google.com/p/curlies/source/browse/trunk/test_pages 1300 tests] have been created to test various parts of the URL (such as host, path, query, etc) and HTML form submissions. The generated reports are available [http://code.google.com/p/curlies/source/browse/trunk/test_results here]. Read the [http://code.google.com/p/curlies/source/browse/trunk/test_results/README README file] to see how the result folders are organized. When viewing the results in code.google.com, click "View raw file" to see formatted reports.
+Tests are being carried out across all major modern browsers (IE 6, 7, 8; Firefox 2, 3.0, 3.5;  Safari 3, 4; Chrome 2, 3; Opera 9, 10) on all the major platforms (Windows XP, Windows Vista, Windows 7, Mac, Linux and Android 1.6, 2.0 and iPhone 3.0). Over [http://code.google.com/p/curlies/source/browse/trunk/test_pages 1500 tests] have been created to test various parts of the URL (such as host, path, query, etc) and HTML form submissions. The generated reports are available [http://code.google.com/p/curlies/source/browse/trunk/test_results here]. Read the [http://code.google.com/p/curlies/source/browse/trunk/test_results/README README file] to see how the result folders are organized. When viewing the results in code.google.com, click "View raw file" to see formatted reports.
 
 == Possible Future Goals ==
-  * Extend testing to browsers on smartphones such as Android and iPhone *(In progress)*
+  * Extend testing to browsers on smartphones such as Android and iPhone *(Done)*
   * Add more test cases, such as empty login, etc.
   * Test Web Search Toolbar URL behavior on different browser/platform.
   * Investigate/test differences in behaviors of two different DOM calls in different browsers depending on the part of the URL, for example:
