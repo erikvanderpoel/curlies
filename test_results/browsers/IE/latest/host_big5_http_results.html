@@ -25,27 +25,27 @@ tests, please add it in the ../source/testcases.cc, or contact the authors.
 <meta http-equiv="Content-Type"content="text/html; charset=US-ASCII">
 </head>
 <body>
-<h1>Host (HTTP) Test Results</h1>
-<h4>Legend</h4>
-<table>
-<tr><td>\xXX<td>= a single byte with that hex encoding
-<tr><td>%XX<td>= three bytes (%, X and X)
-<tr><td>not sent<td>= no DNS/HTTP packet was sent
-<tr><td>deleted<td>= byte was deleted before packet was sent
-<tr><td>terminator<td>= this character was treated as a delimiter
-<tr><td>dot<td>= this was treated like the dot in domain names
+<h2>Host (HTTP) Test Results</h2>
+
+<table border=1>
+<tr><td align=right>\xXX<td>a single byte with that hex encoding
+<td align=right>%XX<td>three bytes (%, X and X)
+<tr><td align=right>not sent<td>no DNS/HTTP packet was sent
+<td align=right>deleted<td>byte was deleted before packet was sent
+<tr><td align=right>terminator<td>this character was treated as a delimiter
+<td align=right>dot<td>this was treated like the dot in domain names
 </table><br>
 <table border="1">
-<tr><th>ID</th><th>Test</th><th>WinXP.SP3/IE8.0.6</th><th>WinVista.SP1/IE8.0.6</th></tr>
-<tr><td>1024</td><td>\xA2\xCC</td><td>xn--kkr</td><td>xn--kkr</td></tr>
-<tr><td>1025</td><td>\xA4Q</td><td>xn--kkr</td><td>xn--kkr</td></tr>
-<tr bgcolor='#FFFF00'><td>1026</td><td>%a2%cc</td><td>%a2%cc</td><td>not sent</td></tr>
-<tr bgcolor='#FFFF00'><td>1028</td><td>%a4%51</td><td>%a4q</td><td>not sent</td></tr>
-<tr bgcolor='#FFFF00'><td>1029</td><td>%e5%8d%81</td><td>%e5%8d%81</td><td>not sent</td></tr>
-<tr><td>1030</td><td>\xA2\xCC%20%a2%cc</td><td>not sent</td><td>not sent</td></tr>
-<tr><td>1031</td><td>\xA2\xCC%a2%cc</td><td>not sent</td><td>not sent</td></tr>
-<tr><td>1032</td><td>&amp;#x5341;</td><td>xn--kkr</td><td>xn--kkr</td></tr>
-<tr><td>1033</td><td>&amp;#x5341;%2ecom</td><td>xn--kkr.com</td><td>xn--kkr.com</td></tr>
+<tr><th>ID</th><th>Test</th><th>WinXP.SP3/IE8.0.6001.18702.0</th><th>WinVista.SP2/IE8.0.6001.18865</th><th>Win7/IE8.0.7600.16385</th></tr>
+<tr><td>1024</td><td>\xA2\xCC</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr><td>1025</td><td>\xA4Q</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr bgcolor='#FFFF00'><td>1026</td><td>%a2%cc</td><td>%a2%cc</td><td>not sent</td><td>not sent</td></tr>
+<tr bgcolor='#FFFF00'><td>1028</td><td>%a4%51</td><td>%a4q</td><td>not sent</td><td>not sent</td></tr>
+<tr bgcolor='#FFFF00'><td>1029</td><td>%e5%8d%81</td><td>%e5%8d%81</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>1030</td><td>\xA2\xCC%20%a2%cc</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>1031</td><td>\xA2\xCC%a2%cc</td><td>not sent</td><td>not sent</td><td>not sent</td></tr>
+<tr><td>1032</td><td>&amp;#x5341;</td><td>xn--kkr</td><td>xn--kkr</td><td>xn--kkr</td></tr>
+<tr><td>1033</td><td>&amp;#x5341;%2ecom</td><td>xn--kkr.com</td><td>xn--kkr.com</td><td>xn--kkr.com</td></tr>
 </table>
 </body>
 </html>
