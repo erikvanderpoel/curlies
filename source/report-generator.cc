@@ -211,6 +211,10 @@ int main(int argc, char* argv[]) {
       }
     }
     replace(str.begin(), str.end(), '_', '.');
+    slash = str.find('/');
+    if (slash >= 0) {
+      str.replace(slash, 1, "<br>");
+    }
     platform_browser_under_test.push_back(str);
     vector<string> dns_results(total_num_of_test, "not sent");
     vector<string> http_results(total_num_of_test, "not sent");
