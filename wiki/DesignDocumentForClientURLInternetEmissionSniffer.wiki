@@ -149,13 +149,11 @@ The report generator lives at [http://code.google.com/p/curlies/source/browse/tr
 To generate reports, run:
 
 {{{
-g++ -I path/to/boost_1_40_0 -Lpath/to/boost/regex/library/binary -Wall -g source/report-generator.cc source/packet-sniffer.cc source/testcases.cc -o report-generator -lboost_regex -lpcap
+g++ -Wall -g source/report-generator.cc source/packet-sniffer.cc source/testcases.cc -o report-generator -lpcap
 ./report-generator output/folder/ path/to/pcap/files/MacOSX10_5_7/FF3_0_11.pcap path/to/pcap/files/MacOSX10_5_7/Safari4_0.pcap path/to/pcap/files/MacOSX10_5_7/Chrome3_0_18.pcap 
 }}}
 
 The example above generates reports which contain test results side by side for FireFox 3.0.11, Safari 4.0 and Chrome 3.0.18 on MacOS X 10.5.7. A report will be generated for each character encoding and for each URL component. Reports across other browsers/platforms are generated in a similar manner. For a set of pre-generated results, see [http://code.google.com/p/curlies/source/browse/#svn/trunk/test_results /test_results]
-
-Note the library makes use of the regular expression library from Boost C++ library, so the correct installation path of Boost and the regex library needs to be provided to compile and link the code correctly. For more information on how to install and build programs with Boost for your platform, see the [http://www.boost.org/doc/libs/1_41_0/more/getting_started/index.html Boost Getting Started Guide]. 
 
 ==Related Projects==
   * [http://code.google.com/p/browsersec/wiki/Part1#Uniform_Resource_Locators Browser Security Handbook]
@@ -163,4 +161,3 @@ Note the library makes use of the regular expression library from Boost C++ libr
 ==References==
   * [http://www.tcpdump.org TCPDUMP/LIBPCAP public repository]
   * [http://www.networksorcery.com/enp RFC Sourcebook]
-  * [http://www.boost.org/ Boost C++ library]
