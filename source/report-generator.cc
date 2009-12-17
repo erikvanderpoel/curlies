@@ -25,7 +25,6 @@
 #include <string>
 #include <vector>
 
-#include "boost/regex.hpp"
 #include "config.h"
 #include "packet-sniffer.h"
 #include "testcases.h"
@@ -199,12 +198,20 @@ int main(int argc, char* argv[]) {
   // Collect results for each browser/platform being tested
   for (vector<char*>::const_iterator it = input_cap_files.begin();
        it != input_cap_files.end(); it++) {
-    const boost::regex e("/([^/]+/[^/]+)\\.p?cap");
-    boost::match_results<string::const_iterator> what;
-    assert(boost::regex_search(string(*it), what, e, boost::match_default));
-    string match(what[1].first, what[1].second);
-    replace(match.begin(), match.end(), '_', '.');
-    platform_browser_under_test.push_back(match);
+    string str(*it);
+    int dot = str.rfind('.');
+    if (dot >= 0) {
+      str.erase(dot);
+    }
+    int slash = str.rfind('/');
+    if (slash > 0) {
+      slash = str.rfind('/', slash - 1);
+      if (slash >= 0) {
+        str.erase(0, slash + 1);
+      }
+    }
+    replace(str.begin(), str.end(), '_', '.');
+    platform_browser_under_test.push_back(str);
     vector<string> dns_results(total_num_of_test, "not sent");
     vector<string> http_results(total_num_of_test, "not sent");
     ExtractResultsFromCapFile(*it, "dns", &dns_results);
