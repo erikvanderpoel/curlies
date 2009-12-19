@@ -1,4 +1,4 @@
-Erik van der Poel, 25 Nov 2009, Draft 1
+Erik van der Poel, 18 Dec 2009, Draft 1.5
 
 === 1 Introduction ===
 
@@ -118,25 +118,25 @@ Note: !JavaScript characters and strings are in UTF-16.
 
 For the HTML tag `<a href="...">`, the following interfaces are available.
 
-`this.href` should return the host name in Unicode, even if the original was in Punycode or percent-encoded UTF-8. Originally percent-encoded text in other parts of the URL should be returned as is, while originally not-percent-encoded text is returned in Unicode. Note: This corresponds to IRI. TODO: Decide whether this interface should return the absolute URL or the relative URL.
+`this.href` should return the host name in Unicode, even if the original was in Punycode or percent-encoded UTF-8. Originally percent-encoded text in other parts of the URL should be returned as is, while originally not-percent-encoded text is returned in Unicode. Note: This corresponds to IRI. TODO: Decide whether this interface should return the absolute URL or the relative URL. In IE8 mode, IE8 returns the absolute URL.
 
-  _*Diffs*_ IE and Firefox do not support percent-encoded UTF-8 in the host name.
+  _*Diffs*_ IE and Firefox do not support percent-encoded UTF-8 in the host name. When the HTML specifies the host name in Punycode, IE, Firefox and Opera return the host name in Unicode, while Chrome returns it in Punycode.
 
-`this.getAttribute('href')` should return the host name in Punycode, even if the original was in some other encoding. Other parts of the URL should be returned in the format described in section 8 "Resolving a URL". Note: This corresponds to URI. TODO: Decide whether this interface should return the absolute URL or the relative URL.
+`this.getAttribute('href')` should return the URL in the original format, except for not-percent-encoded text, which should be returned in Unicode. This interface should return the absolute URL or the relative URL, depending on the original. In IE8 mode, IE8 returns the original. TODO: Test this.
 
-  _*Diffs*_ Microsoft's interface allows an extra argument that controls relative vs absolute and Unicode vs Punycode host. See [http://msdn.microsoft.com/en-us/library/ms536429(VS.85).aspx their interface]. IE only returns Punycode when 2 is passed for the second argument.
+  _*Diffs*_ Microsoft's interface allows an extra argument that controls relative vs absolute and Unicode vs Punycode host. See [http://msdn.microsoft.com/en-us/library/ms536429(VS.85).aspx their interface]. If the HTML source specifies the host name in Punycode, IE only returns it in Punycode when 2 is passed for the second argument.
 
 `this.hostname` should return Unicode.
 
-  _*Diffs*_ Chrome3 returns Punycode, while IE8, Firefox3.5 and Opera10 return Unicode.
+  _*Diffs*_ When the HTML specifies the host name in Punycode, Chrome3 returns Punycode, while IE8, Firefox3.5 and Opera10 return Unicode.
 
 `this.pathname` should return Unicode.
 
-  _*Diffs*_ Firefox3.5 and Chrome3 return percent-encoded UTF-8, while IE8 and Opera10 return Unicode.
+  _*Diffs*_ When the HTML has a not-percent-encoded path, Firefox3.5 and Chrome3 return percent-encoded UTF-8, while IE8 and Opera10 return Unicode.
 
 `this.search` should return Unicode.
 
-  _*Diffs*_ IE8 returns Unicode, while Firefox3.5, Chrome3 and Opera10 return percent-encoded original character encoding.
+  _*Diffs*_ When the HTML has a not-percent-encoded query, IE8 returns Unicode, while Firefox3.5, Chrome3 and Opera10 return percent-encoded original character encoding.
 
 ==== 7.2 Summary ====
 
