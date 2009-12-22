@@ -22,7 +22,7 @@
  * order. However, ALWAYS use the Next Available ID when you add a new
  * test case, and then update the Next Available ID accordingly.
  *
- * Next Available ID: 1312
+ * Next Available ID: 1357
  *
  * @author Shaopeng Jia (jia.shao.peng@gmail.com)
  * @author Erik van der Poel (erikvanderpoel@gmail.com)
