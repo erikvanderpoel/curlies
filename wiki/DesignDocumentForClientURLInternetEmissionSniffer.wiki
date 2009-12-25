@@ -44,7 +44,7 @@ The generated test pages are placed under the directory test_pages/
 
 Currently over 1300 test cases are generated. These contain tests for various parts of the URL (host, path, parameter and query) and HTTP form submission, for different character encodings (ASCII and Big5). Tests for other encodings could easily be added.
 
-Each test case is a URL that is embedded in a html file as <img src="URL to test">. The benefit of doing this is that all the URLs we want to test will be loaded automatically when the page is loaded, so people don't have to manually click each URL to test it. The only exception is HTML form testing, which is described below.
+Each test case is a URL that is embedded in a html file as {{{<img src="URL to test">}}}. The benefit of doing this is that all the URLs we want to test will be loaded automatically when the page is loaded, so people don't have to manually click each URL to test it. The only exception is HTML form testing, which is described below.
 
 Each URL is constructed in a way which makes it easy for us to do packet sniffing later. For that purpose, we embed the test case between special character sequences, so that our packet sniffer could later easily retrieve this information without parsing the packet in detail. In particular, we use "9qz" to enclose the string we want to test in an URL. In addition, we use "9pz" to enclose the test ID for a test case, so that the test result for a test case could be put into the right place during report generation.
 
