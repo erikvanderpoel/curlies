@@ -155,6 +155,17 @@ g++ -Wall -g source/report-generator.cc source/packet-sniffer.cc source/testcase
 
 The example above generates reports which contain test results side by side for FireFox 3.0.11, Safari 4.0 and Chrome 3.0.18 on MacOS X 10.5.7. A report will be generated for each character encoding and for each URL component. Reports across other browsers/platforms are generated in a similar manner. For a set of pre-generated results, see [http://code.google.com/p/curlies/source/browse/#svn/trunk/test_results /test_results]
 
+===Mobile Testing===
+Since Q4 2009, testing on mobile browsers are included into this project. At this moment, we are primarily focused on the iPhone and Android platforms. Here is how to test mobile browsers on the two platforms:
+    * iPhone
+        * Load the test html files on iPod touch/iPhone.
+        * run [http://code.google.com/p/n1mda-dev/wiki/PirniUsageGuide Pirni command line tool] on iPod touch to capture all packets into .pcap file.
+        * run our report-generator on the .pcap files in Linux
+    * Android
+        * Load the test html files on Android
+        * run tcpdump on Android, following the steps listed in [http://junxian-huang.blogspot.com/2009/03/finally-tcpdump-on-gphone-g1-android.html this blog post]
+        * run our report-generator on the .pcap files in Linux
+ 
 ==Related Projects==
   * [http://code.google.com/p/browsersec/wiki/Part1#Uniform_Resource_Locators Browser Security Handbook]
 
